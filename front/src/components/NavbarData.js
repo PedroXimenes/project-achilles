@@ -1,9 +1,7 @@
 import React from 'react'
-import {FaBars, FaCartPlus} from 'react-icons/fa'
-import {IoIosPaper} from 'react-icons/io'
-import { AiOutlineClose, AiFillHome, AiOutlineQuestion,AiOutlineQuestionCircle, AiOutlineInfoCircle } from 'react-icons/ai'
+import { AiFillHome, AiOutlineQuestionCircle, AiOutlineInfoCircle } from 'react-icons/ai'
 
-export const SidebarData = [
+export const NavbarData = [
     {
         title: 'Início',
         path: '/',

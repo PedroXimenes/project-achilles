@@ -5,14 +5,15 @@ import json
 import numpy as np
 
 def analysis1(hnum=None, hden=None, gnum=None, gden=None):
-    h_t, h_y, g_T, g_Y, series = StepResponse(hnum, hden, gnum, gden)
+    h_t, h_y, g_T, g_Y, series = stepResponse(hnum, hden, gnum, gden)
     
-    mag2, phase2, omega = BodeDiagram(series)
+    mag2, phase2, omega = bodeDiagram(series)
 
-    real, imag, klist = RootLocus(series)   
+    real, imag, klist = rootLocus(series)   
 
     poles = control.pole(series)
     zeros = control.zero(series)
+    print(poles)
     print(zeros)
     num_poles = len(poles)
 
@@ -29,14 +30,15 @@ def analysis1(hnum=None, hden=None, gnum=None, gden=None):
                 "root_real": real.tolist(),
                 "root_imag": imag.tolist(),
                 "root_gain": klist.tolist(),
-                "num_poles": num_poles
+                "num_poles": num_poles,
+                # "zeros": zeros
                 }
     data = json.dumps(fb_data)
 
     return data
 
 
-def StepResponse(hnum=None, hden=None, gnum=None, gden=None):
+def stepResponse(hnum=None, hden=None, gnum=None, gden=None):
     #Process open loop step response
     sys = signal.TransferFunction(hnum, hden)
     t, y = signal.step(sys)
@@ -52,14 +54,14 @@ def StepResponse(hnum=None, hden=None, gnum=None, gden=None):
     return t, y, T, Y, series
 
 
-def BodeDiagram(series=None):
+def bodeDiagram(series=None):
     magnitude, phase, omega = control.bode(series, dB=True)
     mag_db = control.mag2db(magnitude)
     phase_deg = np.rad2deg(phase)
 
     return mag_db, phase_deg, omega
 
-def RootLocus(series=None):
+def rootLocus(series=None):
     rlist, klist = control.root_locus(series)
  
     total, shape = rlist.shape
