@@ -16,7 +16,7 @@ function App() {
   const [showLoading, setShowLoading] = useState(false);
 
   useEffect(() => {
-    fetch('http://localhost:5000/home').then(res => res.json()).then(data => {});
+    fetch('http://35.231.19.210:5000/home').then(res => res.json()).then(data => {});
   }, []);
 
   const sendInfoOL = async (system) => {
@@ -26,7 +26,7 @@ function App() {
         setShowLoading(true)
       }
 
-      const res = await fetch('http://localhost:5000/analysis',{
+      const res = await fetch('http://35.231.19.210:5000/analysis',{
         method: 'POST',
         headers: {
           'Content-type': 'application/json'

@@ -1,5 +1,5 @@
 import React from 'react'
-import { VictoryLine, VictoryChart, VictoryScatter, VictoryVoronoiContainer, VictoryLabel, createContainer} from 'victory'
+import { VictoryLine, VictoryChart, VictoryScatter, VictoryVoronoiContainer, VictoryAxis, VictoryLabel, createContainer} from 'victory'
 
 const RootLocus = ({input_data}) => {
     var data = [];
@@ -28,6 +28,7 @@ const RootLocus = ({input_data}) => {
                 <VictoryLabel x={105} y={30} text="Lugar das Raízes" />
                 {items}
                 <VictoryScatter data={poles} symbol="plus" size={1.75}/> 
+                <VictoryAxis fixLabelOverlap={true} />
             </VictoryChart>
         </div>
     )
