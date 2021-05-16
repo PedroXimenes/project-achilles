@@ -18,7 +18,7 @@ const BodeDiagram = ({input_data}) => {
                     minDomain={{ x: input_data.omega[0] }} height={250} width={350}
                     containerComponent={
                         <VictoryVoronoiContainer 
-                            labels={({ datum }) => `Amplitude: ${datum.y.toPrecision(2)} dB \n Frequência: ${datum.x.toPrecision(2)} rad/s `  }/>} 
+                            labels={({ datum }) => `Magnitude: ${datum.y.toPrecision(2)} dB \n Frequência: ${datum.x.toPrecision(2)} rad/s `  }/>} 
                 >
                     
                     <VictoryLabel x={120} y={30} text="Diagramas de Bode" />
@@ -44,7 +44,7 @@ const BodeDiagram = ({input_data}) => {
                     minDomain={{ x: input_data.omega[0] }} height={250} width={350}
                     containerComponent={
                         <VictoryVoronoiContainer 
-                            labels={({ datum }) => `Magnitude: ${datum.y.toPrecision(2)} dB \n Frequência: ${datum.x.toPrecision(2)} rad/s `  }/>} 
+                            labels={({ datum }) => `Fase: ${datum.y.toPrecision(2)}° \n Frequência: ${datum.x.toPrecision(2)} rad/s `  }/>} 
                 >
                     
                     <VictoryLine 
