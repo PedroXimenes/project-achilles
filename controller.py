@@ -4,17 +4,15 @@ from matplotlib import pyplot as plt
 import json
 import numpy as np
 
-def analysis1(hnum=None, hden=None, gnum=None, gden=None):
-    h_t, h_y, g_T, g_Y, series = stepResponse(hnum, hden, gnum, gden)
+def calculate(hnum=None, hden=None, gnum=None, gden=None):
+    h_t, h_y, g_t, g_y, series = stepResponse(hnum, hden, gnum, gden)
     
-    mag2, phase2, omega = bodeDiagram(series)
+    mag, phase, omega = bodeDiagram(series)
 
     real, imag, klist = rootLocus(series)   
 
     poles = control.pole(series)
     zeros = control.zero(series)
-    print(poles)
-    print(zeros)
     num_poles = len(poles)
 
     fb_data = { 
@@ -22,16 +20,16 @@ def analysis1(hnum=None, hden=None, gnum=None, gden=None):
                 "y_axis_ol": h_y.tolist(),
                 "hnum": hnum,
                 "hden": hden,
-                "x_axis_cl":    g_T.tolist(),
-                "y_axis_cl":   g_Y.tolist(),
+                "x_axis_cl":    g_t.tolist(),
+                "y_axis_cl":   g_y.tolist(),
                 "omega":          omega.tolist(),
-                "magnitude":      mag2.tolist(),
-                "phase":          phase2.tolist(),
+                "magnitude":      mag.tolist(),
+                "phase":          phase.tolist(),
                 "root_real": real.tolist(),
                 "root_imag": imag.tolist(),
                 "root_gain": klist.tolist(),
                 "num_poles": num_poles,
-                # "zeros": zeros
+                "zeros": zeros.tolist()
                 }
     data = json.dumps(fb_data)
 
@@ -63,7 +61,7 @@ def bodeDiagram(series=None):
 
 def rootLocus(series=None):
     rlist, klist = control.root_locus(series)
- 
+
     total, shape = rlist.shape
     index = 0
     j = 0

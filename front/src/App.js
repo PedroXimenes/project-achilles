@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom' 
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom' 
 
 import BodeDiagram from './components/BodeDiagram'
 import RootLocus from './components/RootLocus'
 import StepResponse from './components/StepResponse'
 import Sidebar from './components/Sidebar'
-//import Navbar from './components/Sidebar'
 
 import './App.css';
 import Loading from './components/Loading';

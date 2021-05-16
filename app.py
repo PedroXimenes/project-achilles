@@ -1,9 +1,7 @@
-import requests
-from flask import Flask, request, redirect, url_for
+from flask import Flask, request
 import json
-from controller import analysis1
+from controller import calculate
 from flask_cors import CORS
-from werkzeug.exceptions import BadRequest
 # Initialize Flask
 app = Flask(__name__)
 
@@ -14,11 +12,7 @@ app.secret_key = '1dae3ab43167fa155e5dd772fd8206b1'
 @app.route('/')
 @app.route('/home')
 def home():
-    return {"result": "Control System"}
-
-@app.route('/help')
-def about():
-    return {"result": "Help"}
+    return {"result": "Project Achilles"}
 
 @app.route('/health')
 def health():
@@ -28,16 +22,14 @@ def health():
 def analysis():
     if request.method == "POST":
         data = json.loads(request.data)
-        print(data)
+        
         hnum = list(map(float,data['hnum'].split(',')))
         hden = list(map(float,data['hden'].split(',')))
         gnum = list(map(float,data['gnum'].split(',')))
         gden = list(map(float,data['gden'].split(',')))
         
-        try:
-            resp = analysis1(hnum, hden, gnum, gden)
-        except:
-            raise BadRequest
+        resp = calculate(hnum, hden, gnum, gden)
+
         return resp
     
     return "Analysis"
