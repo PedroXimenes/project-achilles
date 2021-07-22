@@ -14,7 +14,6 @@ const StepResponse = ({ input_data }) => {
     }); // Malha fechada
 
     var S = input_data.step_info
-    console.log('Step_info' + S)
     
     let overshoot = [];
     let tr = [], ts = [], tp = [];
@@ -43,7 +42,6 @@ const StepResponse = ({ input_data }) => {
         ]
         
     }
-    console.log(overshoot,steadyState,tr,ts,tp)
     return (
         <div>
             <div className="step-response">

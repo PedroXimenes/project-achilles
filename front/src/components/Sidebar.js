@@ -49,16 +49,18 @@ export const Sidebar = ({ onSend }) => {
             alert('Por favor, digite apenas números.')
             return 
         } 
-        onSend({ hnum, hden, gnum, gden, load })
-   
-        setDataForShow({ hnum, hden, gnum, gden, load })
+        onSend({ hnum, hden, gnum, gden, load })  
         
-        console.log(dataForShow)
         setHnum('')
         setHden('')
         setGnum('')
         setGden('')
+
+        setDataForShow({hnum, hden, gnum, gden})
+
     }
+
+
     return (
         <>
         <IconContext.Provider value={{color: '#fff'}}>     
@@ -103,9 +105,9 @@ export const Sidebar = ({ onSend }) => {
                         <li className='form-text'>Denominador</li>
                         <input className='input-bar' type="text" value={gden} placeholder="Exemplo: 1,2,3" onChange={(e) => setGden(e.target.value)}/>
                     </div>
-                    <input type='submit' value='Enviar' className='btn' onClick={() => setLoad(true)}/> 
+                    <button type='submit' value='Enviar' className='btn' onClick={() => setLoad(true)}/> 
                     <div className="line"/>
-                    <ShowInput input_data={dataForShow}/>
+                <ShowInput input_data={dataForShow}/>                    
                 </form>
             </ul>
         </nav>

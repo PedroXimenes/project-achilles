@@ -1,58 +1,69 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import MathJax from 'react-mathjax-preview'
+
 
 const ShowInput = ({ input_data }) => {
-    if(input_data !== "") {
-        var hnum = input_data.hnum
-        var hden = input_data.hden
-        var gnum = input_data.gnum
-        var gden = input_data.gden
-        console.log(hnum,hden)
-        const strToArray = (text) => {
-            let array = []
-            var value
-            var myStr = text.split(',')
-            for (var i = 0; i < myStr.length; i++){
-                value = parseFloat(myStr[i])
-                if(!isNaN(value)){
-                    array.push(value)
+    const [ascii,setAscii] = useState('')
+    useEffect(() => {
+        if(input_data) {
+            let hnum = input_data.hnum
+            let hden = input_data.hden
+            let gnum = input_data.gnum
+            let gden = input_data.gden
+            console.log(hnum,hden)
+            const strToArray = (text) => {
+                let array = []
+                let value
+                let myStr = text.split(',')
+                for (let i = 0; i < myStr.length; i++){
+                    value = parseFloat(myStr[i])
+                    if(!isNaN(value)){
+                        array.push(value)
+                    }
+                    continue
                 }
-                continue
+                return array
             }
-            return array
-        }
-        var Hn = strToArray(hnum)
-        var Hd = strToArray(hden)
-        var Gn = strToArray(gnum)
-        var Gd = strToArray(gden)
-
-        console.log(Hn, Hd, Gn, Gd)
-        
-        const formatMathExpression = (value) => {
-            var mathExpression = ''
-            var numberExpression = ''
-            for(var i = 0; i < value.length; i++){
-                numberExpression = ` ${value[i]} `
-                if(value[i] > 0){
-                    numberExpression = ` + ${value[i]} `
+            const Hn = strToArray(hnum)
+            const Hd = strToArray(hden)
+            const Gn = strToArray(gnum)
+            const Gd = strToArray(gden) 
+            console.log(Hn, Hd, Gn, Gd)
+            
+            const formatMathExpression = (value) => {
+                let mathExpression = ''
+                let numberExpression = ''
+                for(let i = 0; i < value.length; i++){
+                    numberExpression = ` ${value[i]} `
+                    if(value[i] > 0 && i>0){
+                        numberExpression = ` + ${value[i]} `
+                    }
+                    mathExpression += numberExpression
                 }
-                mathExpression += numberExpression
+                console.log(mathExpression)
+                return mathExpression
             }
-            console.log(mathExpression)
-            return mathExpression
-        }
-        const system_num = formatMathExpression(Hn)
-        const system_den = formatMathExpression(Hd)
-        const controller_num = formatMathExpression(Gn)
-        const controller_den = formatMathExpression(Gd)
+            const system_num = formatMathExpression(Hn)
+            const system_den = formatMathExpression(Hd)
+            const controller_num = formatMathExpression(Gn)
+            const controller_den = formatMathExpression(Gd)
 
-        var system = `${system_num}/${system_den}`
-        var controller = `${controller_num}/${controller_den}`
-    }
+            const system = `(${system_num})/(${system_den})`
+            const controller = `${controller_num}/${controller_den}`
+
+            const asciimath = `\`${system}\``
+            const mathSystem = String.raw`  
+            ${asciimath}`
+            setAscii(mathSystem)
+
+        }},[input_data])
     return (
         <div className="show-input">
             {/* <MathJax math={system}/> */}
-            {system}
-            {controller}
+            {/* {system}
+            {controller} */}
+            <MathJax math={ascii} />
+
         </div>
     );
 }
