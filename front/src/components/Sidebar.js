@@ -105,7 +105,7 @@ export const Sidebar = ({ onSend }) => {
                         <li className='form-text'>Denominador</li>
                         <input className='input-bar' type="text" value={gden} placeholder="Exemplo: 1,2,3" onChange={(e) => setGden(e.target.value)}/>
                     </div>
-                    <button type='submit' value='Enviar' className='btn' onClick={() => setLoad(true)}/> 
+                    <input type='submit' value='Enviar' className='btn' onClick={() => setLoad(true)}/> 
                     <div className="line"/>
                 <ShowInput input_data={dataForShow}/>                    
                 </form>

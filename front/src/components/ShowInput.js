@@ -3,7 +3,9 @@ import MathJax from 'react-mathjax-preview'
 
 
 const ShowInput = ({ input_data }) => {
-    const [ascii,setAscii] = useState('')
+    const [systemShow,setSystemShow] = useState('')
+    const [controllerShow,setControllerShow] = useState('')
+
     useEffect(() => {
         if(input_data) {
             let hnum = input_data.hnum
@@ -33,28 +35,41 @@ const ShowInput = ({ input_data }) => {
             const formatMathExpression = (value) => {
                 let mathExpression = ''
                 let numberExpression = ''
-                for(let i = 0; i < value.length; i++){
-                    numberExpression = ` ${value[i]} `
-                    if(value[i] > 0 && i>0){
-                        numberExpression = ` + ${value[i]} `
+                let power = value.length - 1 
+                for(let i = 0; i < value.length; i++){ 
+                    numberExpression = ` ${value[i]}s^${power} `                         
+                    if(value[i] > 0 && i>0){ 
+                        numberExpression = ` + ${value[i]}s^${power} `
+                    }              
+                    if(power === 1){
+                        numberExpression = numberExpression.replace(`^${power}`,'')
                     }
-                    mathExpression += numberExpression
+                    if(Math.abs(value[0]) === 1 && value.length > 1){
+                        numberExpression = numberExpression.replace(value[0],'')
+                    }  
+                    mathExpression += numberExpression 
+                    power--                      
                 }
+                
+                mathExpression = mathExpression.replace('s^0','')
                 console.log(mathExpression)
                 return mathExpression
             }
             const system_num = formatMathExpression(Hn)
             const system_den = formatMathExpression(Hd)
+           
             const controller_num = formatMathExpression(Gn)
             const controller_den = formatMathExpression(Gd)
+            
+            const system = `\`(${system_num})/(${system_den})\``
+            const controller = `\`(${controller_num})/(${controller_den})\``
 
-            const system = `(${system_num})/(${system_den})`
-            const controller = `${controller_num}/${controller_den}`
+            const mathSystem = String.raw`${system}`
+            const mathController = String.raw`${controller}`
 
-            const asciimath = `\`${system}\``
-            const mathSystem = String.raw`  
-            ${asciimath}`
-            setAscii(mathSystem)
+            setSystemShow(mathSystem)
+            setControllerShow(mathController)                
+            
 
         }},[input_data])
     return (
@@ -62,8 +77,8 @@ const ShowInput = ({ input_data }) => {
             {/* <MathJax math={system}/> */}
             {/* {system}
             {controller} */}
-            <MathJax math={ascii} />
-
+            <MathJax math={systemShow} />
+            <MathJax math={controllerShow} />
         </div>
     );
 }
