@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom' 
+import { apiBaseURL } from './config/index';
 
 import BodeDiagram from './components/BodeDiagram'
 import RootLocus from './components/RootLocus'
 import StepResponse from './components/StepResponse'
 import Sidebar from './components/Sidebar'
+import ShowInput from './components/ShowInput'
 
 import './App.css';
 import Loading from './components/Loading';
@@ -15,26 +17,26 @@ function App() {
   const [showLoading, setShowLoading] = useState(false);
 
   useEffect(() => {
-    fetch('http://35.231.19.210:5000/home').then(res => res.json()).then(data => {});
+    fetch(`${apiBaseURL}/home`).then(res => res.json());
   }, []);
 
   const sendInfoOL = async (system) => {
-      console.log(system)
-      if(system.load === true){
-        setShowChartAnalysis(false)
-        setShowLoading(true)
-      }
+    console.log(system)
+    if(system.load === true){
+      setShowChartAnalysis(false)
+      setShowLoading(true)
+    }
 
-      const res = await fetch('http://35.231.19.210:5000/analysis',{
-        method: 'POST',
-        headers: {
-          'Content-type': 'application/json'
-        },
-        body: JSON.stringify(system)
+    const res = await fetch( `${apiBaseURL}/analysis`,{
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json'
+      },
+      body: JSON.stringify(system)
     })
     
     const data = await res.json()
-    console.log(data)
+    console.log('Data: ' + data)
     setShowLoading(false)
 
     var input_data = []
@@ -50,7 +52,7 @@ function App() {
      <Router >
      <div className="page">
        <Switch>
-          <Route path='/' exact render={(props) => (
+          <Route path='/' exact render={() => (
             <>
             <Sidebar onSend={sendInfoOL}/>
             { showLoading === true && <Loading />}
@@ -59,12 +61,13 @@ function App() {
             { showChartAnalysis === true && <RootLocus input_data={systemAnalysis} className="test"/>}
             </>
           )}/>
-          <Route path='/help' exact render={(props) => (
+          <Route path='/help' exact render={() => (
             <>
+            {/* { showChartAnalysis === true && <ShowInput input_data={systemAnalysis}/>} */}
               <p>Página indisponível no momento</p>
             </>
           )}/>
-          <Route path='/about' exact render={(props) => (
+          <Route path='/about' exact render={() => (
             <>
               <p>Página indisponível no momento</p>
             </>

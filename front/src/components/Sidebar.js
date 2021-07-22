@@ -3,6 +3,7 @@ import React, {useState} from 'react'
 import {NavbarData} from './NavbarData'
 import '../index.css'
 import {IconContext} from 'react-icons'
+import ShowInput from './ShowInput'
 
 export const Sidebar = ({ onSend }) => {
     const [hnum, setHnum] = useState('')
@@ -10,6 +11,7 @@ export const Sidebar = ({ onSend }) => {
     const [gnum, setGnum] = useState('')
     const [gden, setGden] = useState('')
     const [load, setLoad] = useState(false)
+    const [dataForShow, setDataForShow] = useState('')
 
     const onSubmit = (e) => {
         e.preventDefault()
@@ -47,9 +49,11 @@ export const Sidebar = ({ onSend }) => {
             alert('Por favor, digite apenas números.')
             return 
         } 
-
         onSend({ hnum, hden, gnum, gden, load })
-
+   
+        setDataForShow({ hnum, hden, gnum, gden, load })
+        
+        console.log(dataForShow)
         setHnum('')
         setHden('')
         setGnum('')
@@ -58,52 +62,53 @@ export const Sidebar = ({ onSend }) => {
     return (
         <>
         <IconContext.Provider value={{color: '#fff'}}>     
-                <div className="navbar">
-                        {NavbarData.map((item, index) => {
-                            return (
-                                <li key={index} className={item.className}>
-                                    <Link to={item.path}>
-                                        {item.icon}
-                            <span>{item.title}</span>
-                                    </Link>
-                                </li>
-                            )
-                        })}
-                </div>
-                <nav className='nav-menu-active'>
-                    <h1 className="title-text">Project Achilles</h1> 
-                        <ul className='nav-menu-items'>
-                        
-                        <form className="form" onSubmit={onSubmit}>
-                            <h2 className='form-text2'>Processo</h2>
-                            <div>
-                                <li className='form-text'>Numerador</li>
-                                <input className='input-bar' type="text" placeholder="Exemplo: 1,2" value={hnum} onChange={(e) => setHnum(e.target.value)}/>
-                            </div>
+            <div className="navbar">
+                {NavbarData.map((item, index) => {
+                    return (
+                        <li key={index} className={item.className}>
+                            <Link to={item.path}>
+                                {item.icon}
+                    <span>{item.title}</span>
+                            </Link>
+                        </li>
+                    )
+                })}
+            </div>
+        <nav className='nav-menu-active'>
+            <h1 className="title-text">Project Achilles</h1> 
+                <ul className='nav-menu-items'>
+                
+                <form className="form" onSubmit={onSubmit}>
+                    <h2 className='form-text2'>Processo</h2>
+                    <div>
+                        <li className='form-text'>Numerador</li>
+                        <input className='input-bar' type="text" placeholder="Exemplo: 1,2" value={hnum} onChange={(e) => setHnum(e.target.value)}/>
+                    </div>
 
-                            
-                            <div>
-                                <li className='form-text'>Denominador</li>
-                                <input className='input-bar' type="text" placeholder="Exemplo: 1,2,3" value={hden} onChange={(e) => setHden(e.target.value)}/>
-                            </div>
-                            
-                            <div className="line"/>
-                            <h2 className='form-text2'>Controlador</h2>
-                            <div>
-                                <li className='form-text'>Numerador</li>
-                                <input className='input-bar' type="text" value={gnum} placeholder="Exemplo: 1,2" onChange={(e) => setGnum(e.target.value)}/>
-                            </div>
-                            
-
-                            <div>
-                                <li className='form-text'>Denominador</li>
-                                <input className='input-bar' type="text" value={gden} placeholder="Exemplo: 1,2,3" onChange={(e) => setGden(e.target.value)}/>
-                            </div>
-                            <input type='submit' value='Enviar' className='btn' onClick={(e) => setLoad(true)}/> 
-                        </form>
                     
-                    </ul>
-                </nav>
+                    <div>
+                        <li className='form-text'>Denominador</li>
+                        <input className='input-bar' type="text" placeholder="Exemplo: 1,2,3" value={hden} onChange={(e) => setHden(e.target.value)}/>
+                    </div>
+                    
+                    <div className="line"/>
+                    <h2 className='form-text2'>Controlador</h2>
+                    <div>
+                        <li className='form-text'>Numerador</li>
+                        <input className='input-bar' type="text" value={gnum} placeholder="Exemplo: 1,2" onChange={(e) => setGnum(e.target.value)}/>
+                    </div>
+                    
+
+                    <div>
+                        <li className='form-text'>Denominador</li>
+                        <input className='input-bar' type="text" value={gden} placeholder="Exemplo: 1,2,3" onChange={(e) => setGden(e.target.value)}/>
+                    </div>
+                    <input type='submit' value='Enviar' className='btn' onClick={() => setLoad(true)}/> 
+                    <div className="line"/>
+                    <ShowInput input_data={dataForShow}/>
+                </form>
+            </ul>
+        </nav>
             </IconContext.Provider>
         </>
 

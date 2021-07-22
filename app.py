@@ -1,6 +1,6 @@
 from flask import Flask, request
 import json
-from controller import calculate
+from controller_control import calculate
 from flask_cors import CORS
 # Initialize Flask
 app = Flask(__name__)

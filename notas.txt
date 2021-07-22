@@ -1,0 +1,37 @@
+- (resolvido) Lugar das raízes 
+    - Ajustei o "x" dos polos 
+    - Os zeros estão aparecendo
+    - Arredondei o ganho para precisão de 3 casas decimais
+    - Os eixos não se movem:
+        https://formidable.com/open-source/victory/docs/victory-zoom-container
+    - Box inserido
+    - O gráfico passa pelos zeros
+    - O ganho dos zeros ta indo pra inf
+    - Bug do tooltip consertado
+
+- [(resolvido) foi utilizado uma sortKey = 0 para resolver esse problema ]
+    Descontinuidade nos gráficos
+    - Troquei todas as funções para o do matlab e não teve diferença no front,
+    - O problema está no plot dos vetores no front
+    - VictoryLine pro plot
+    - Verificar a ordenação do plot do vetor
+
+- (resolvido) Colocar bolinha vazia no zero do lugar das raizes
+
+- (resolvido) (BODE) Colocar margem de fase, de ganho, freq cruzamento como legenda
+
+- (resolvido) Overshoot 
+    - mostrar os parâmetros apenas na MF? faz sentido mostrar na MA?
+    - stepinfo calcula certo todos os parâmetros se o sistema atingir regime estacionário
+    - encontrar um modo de validar se o sistema chegou no regime estacionário
+    - caso não chegue, os parâmetros não devem ser mostrados
+    - Calcular step_info somente se os polos em MF tiverem parte real negativa
+    - Ajeitar o calculo para os zeros positivos
+    - Mostrar bonito
+
+- Mostrar a função de transferência digitada pelo usuário
+
+- Inserir input para especificações
+
+- check custom bounds
+

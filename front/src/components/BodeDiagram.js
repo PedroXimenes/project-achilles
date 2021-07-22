@@ -1,16 +1,20 @@
 import React from 'react'
-import { VictoryLine, VictoryChart, VictoryAxis, VictoryLabel, VictoryVoronoiContainer } from 'victory'
+import { VictoryLine, VictoryChart, VictoryAxis, VictoryLabel, VictoryVoronoiContainer, VictoryLegend } from 'victory'
 
 const BodeDiagram = ({input_data}) => {
 
     let data = [];
     let phase = [];
     input_data.omega.forEach((element, index) => {
-
-    data[index] = {"x": element, "y": input_data.magnitude[index]};
-    phase[index] = {"x": element, "y": input_data.phase[index]};
+        data[index] = {"x": element, "y": input_data.magnitude[index]};
+        phase[index] = {"x": element, "y": input_data.phase[index]};
     });
     
+    var gainMargin = input_data.bode_info['gainMargin']
+    var phaseMargin = input_data.bode_info['phaseMargin']
+    var gainFreq = input_data.bode_info['gainFreq']
+    var phaseFreq = input_data.bode_info['phaseFreq']    
+
     return (
         <div>
             <div className="bode-mag">
@@ -21,16 +25,31 @@ const BodeDiagram = ({input_data}) => {
                             labels={({ datum }) => `Magnitude: ${datum.y.toPrecision(2)} dB \n Frequência: ${datum.x.toPrecision(2)} rad/s `  }/>} 
                 >
                     
-                    <VictoryLabel x={120} y={30} text="Diagramas de Bode" />
+                    <VictoryLabel x={120} y={24} text="Diagramas de Bode" />
+                    <VictoryLegend x={50} y={37}
+                        orientation="horizontal"
+                        itemsPerRow={2}
+                        symbolSpacer={6}
+                        gutter={20}
+                        style={{
+                            data: { fill: "blue", type: 'minus', size: 2},
+                          
+                          }}
+                        data={[
+                            {name: `MG: ${gainMargin} dB`, labels: {fontSize: 12}},
+                            {name: `wg: ${gainFreq} rad/s`, labels: {fontSize: 12}}                      
+                        ]}                       
+                        
+                    />
                    
                     <VictoryAxis dependentAxis label="Magnitude (dB)" 
                         axisLabelComponent={<VictoryLabel dy={-30}/>} 
-                        style={{grid:{stroke: ({ tick }) => "grey"}}} 
+                        style={{grid:{stroke: () => "grey"}}} 
                     />
                    
                     <VictoryAxis axisLabelComponent={<VictoryLabel dy={25}/>}  
                         orientation="bottom" 
-                        style={{grid:{stroke: ({ tick }) => "grey"}}} 
+                        style={{grid:{stroke: () => "grey"}}} 
                         tickFormat={(t) => Number.isInteger(Math.log10(t)) ? t: ''}
                      />   
                    
@@ -50,16 +69,35 @@ const BodeDiagram = ({input_data}) => {
                     <VictoryLine 
                     data={phase} style={{ data:{ stroke: "#378bec"}}} 
                     />
+
+                    <VictoryLegend x={50} y={37}
+                        orientation="horizontal"
+                        itemsPerRow={2}
+                        gutter={20}
+                        symbolSpacer={6}
+                        style={{
+                            data: { fill: "blue", type: 'minus', size:2},
+                          
+                          }}
+                        data={[
+                            {name: `MF: ${phaseMargin}°`, labels: {fontSize: 12}},
+                            {name: `wf: ${phaseFreq} rad/s`, labels: {fontSize: 12}}                        
+                        ]}
+                        
+                    />
                     
                     <VictoryAxis dependentAxis label="Phase (º)" 
                         axisLabelComponent={<VictoryLabel dy={-30}/>} 
-                        style={{grid:{stroke: ({ tick }) => "grey"}}} 
+                        style={{grid:{stroke: () => "grey"}}} 
                     /> 
                     
                     <VictoryAxis  label="Frequência (rad/s)" 
                         axisLabelComponent={<VictoryLabel dy={5}/>}  orientation="bottom" 
-                        style={{grid:{stroke: ({ tick }) => "grey"}}} 
+                        style={{grid:{stroke: () => "grey"}}} 
                         tickFormat={(t) => Number.isInteger(Math.log10(t)) ? t: ''} 
+                        fixLabelOverlap={true}
+                        offsetY={50}
+                        
                     /> 
                 </VictoryChart>
 
