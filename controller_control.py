@@ -1,12 +1,12 @@
 import control
 import control.matlab
 from scipy import signal
-from matplotlib import pyplot as plt
+# from matplotlib import pyplot as plt
 import json
 import numpy as np
 
 def calculate(hnum=None, hden=None, gnum=None, gden=None):
-    h_t, h_y, g_t, g_y, series, MF, S = stepResponse(hnum, hden, gnum, gden)
+    h_t, h_y, g_t, g_y, series, S = stepResponse(hnum, hden, gnum, gden)
     
     mag, phase, omega, bode_info = bodeDiagram(series)
     print(bode_info)
@@ -61,7 +61,7 @@ def stepResponse(hnum=None, hden=None, gnum=None, gden=None):
     S = stepInfo(MF)
     print(S)
 
-    return t, y, T, Y, series, MF, S
+    return t, y, T, Y, series, S
 
 def stepInfo(series):
     polesPos = verifyPolesPositive(series)
@@ -109,8 +109,6 @@ def bodeInfo(series):
     return bode_info
     
   
-    
-
 def rootLocus(series=None):
     rlist, klist = control.root_locus(series)
     

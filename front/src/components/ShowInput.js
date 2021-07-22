@@ -12,8 +12,7 @@ const ShowInput = ({ input_data }) => {
             let hden = input_data.hden
             let gnum = input_data.gnum
             let gden = input_data.gden
-            //iughui
-            console.log(hnum,hden)
+
             const strToArray = (text) => {
                 let array = []
                 let value
@@ -30,15 +29,17 @@ const ShowInput = ({ input_data }) => {
             const Hn = strToArray(hnum)
             const Hd = strToArray(hden)
             const Gn = strToArray(gnum)
-            const Gd = strToArray(gden) 
-            console.log(Hn, Hd, Gn, Gd)
+            const Gd = strToArray(gden)     
             
             const formatMathExpression = (value) => {
                 let mathExpression = ''
                 let numberExpression = ''
                 let power = value.length - 1 
                 for(let i = 0; i < value.length; i++){ 
-                    numberExpression = ` ${value[i]}s^${power} `                         
+                    numberExpression = ` ${value[i]}s^${power} `   
+                    if(value[i] === 0){
+                        numberExpression = numberExpression.replace(`${value[i]}s^${power}`,'')
+                    }                      
                     if(value[i] > 0 && i>0){ 
                         numberExpression = ` + ${value[i]}s^${power} `
                     }              
@@ -47,7 +48,7 @@ const ShowInput = ({ input_data }) => {
                     }
                     if(Math.abs(value[0]) === 1 && value.length > 1){
                         numberExpression = numberExpression.replace(value[0],'')
-                    }  
+                    }                     
                     mathExpression += numberExpression 
                     power--                      
                 }
@@ -74,12 +75,15 @@ const ShowInput = ({ input_data }) => {
 
         }},[input_data])
     return (
-        <div className="show-input">
-            {/* <MathJax math={system}/> */}
-            {/* {system}
-            {controller} */}
-            <MathJax math={systemShow} />
-            <MathJax math={controllerShow} />
+        <div >
+            <li className='form-text'>Processo</li>
+            <div className="show-input">
+                <MathJax math={systemShow} />
+            </div>
+            <li className='form-text'>Controlador</li>
+            <div className="show-input">
+                <MathJax math={controllerShow} />
+            </div>
         </div>
     );
 }
