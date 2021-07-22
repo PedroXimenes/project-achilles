@@ -12,6 +12,7 @@ const ShowInput = ({ input_data }) => {
             let hden = input_data.hden
             let gnum = input_data.gnum
             let gden = input_data.gden
+            //iughui
             console.log(hnum,hden)
             const strToArray = (text) => {
                 let array = []
