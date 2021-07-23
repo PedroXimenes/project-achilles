@@ -29,9 +29,12 @@
     - Ajeitar o calculo para os zeros positivos
     - Mostrar bonito
 
-- Mostrar a função de transferência digitada pelo usuário
+- (resolvido) Mostrar a função de transferência digitada pelo usuário
 
 - Inserir input para especificações
-
+    - Overshoot
+    - tempo de acomodação
+    - variação (%) no regime estacionário
+    
 - check custom bounds
 

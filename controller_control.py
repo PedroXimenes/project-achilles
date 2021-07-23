@@ -1,3 +1,4 @@
+import math
 import control
 import control.matlab
 from scipy import signal
@@ -56,13 +57,14 @@ def stepResponse(hnum=None, hden=None, gnum=None, gden=None):
     series = control.series(system, controller)
     MF = control.feedback(series, 1, -1)
     print(series, MF)  
-
+    
     T, Y = control.step_response(MF)
     S = stepInfo(MF)
     print(S)
 
-    return t, y, T, Y, series, S
 
+    return t, y, T, Y, series, S
+                 
 def stepInfo(series):
     polesPos = verifyPolesPositive(series)
     zerosPos = verifyZerosPositive(series)
@@ -86,7 +88,6 @@ def verifyZerosPositive(series):
             return True
     return False
     
-
 def bodeDiagram(series=None):
     magnitude, phase, omega = control.bode(series, dB=True)
     mag_db = control.mag2db(magnitude)
@@ -108,7 +109,6 @@ def bodeInfo(series):
                 }
     return bode_info
     
-  
 def rootLocus(series=None):
     rlist, klist = control.root_locus(series)
     
@@ -137,3 +137,52 @@ def separateRealImag(array):
         parte_imag.append(np.imag(i))
         parte_real.append(np.real(i))
     return parte_real, parte_imag
+
+def finalValue(MF):
+    num, den = separateTF(MF)  
+    return num[-1]/den[-1]   
+
+def checkSettlingTime(specifications, S):
+    settlingTimeInput = specifications.settlingTime
+    SettlingTime = S['SettlingTime'] 
+    sucesso_ts = False
+
+    if(SettlingTime <= settlingTimeInput):
+        sucesso_ts = True
+    return sucesso_ts
+
+def checkOvershoot(specifications, S, yss):
+    overshootInput = specifications.overshoot
+    Peak = S['Peak']
+    sucesso_overshoot = False
+    peakValue = yss * overshootInput / 100 + yss
+
+    if(Peak <= peakValue):
+        sucesso_overshoot = True
+    return sucesso_overshoot
+
+def checkYss(specifications, S, yss):
+    InfValue = S['SteadyStateValue']
+    varSteadyStateInput= specifications.varSteadyState/100 # variação (%) no regime estacionário
+    sucesso_yss = False
+   
+    # Variação do valor estacionário para ser considerado em regime permanente
+    sup_margin = (1. + varSteadyStateInput) * yss # varSteadyState% acima do valor estacionário
+    inf_margin = (1. - varSteadyStateInput) * yss # varSteadyState% abaixo do valor estacionário
+
+    if(InfValue >= inf_margin and InfValue <= sup_margin):
+        sucesso_yss = True
+    return sucesso_yss
+
+def checkBounds(specifications, S, MF):
+    yss = finalValue(MF)
+    sucesso_ts = checkSettlingTime(specifications, S)
+    sucesso_overshoot = checkOvershoot(specifications, S, yss)
+    sucesso_yss = checkYss(specifications, S, yss)
+    
+    return sucesso_ts, sucesso_overshoot, sucesso_yss
+
+def separateTF(series):
+    numerador = series.num[0][0]
+    denominador = series.den[0][0]
+    return numerador, denominador
