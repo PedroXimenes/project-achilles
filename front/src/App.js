@@ -5,6 +5,7 @@ import './App.css';
 import Analysis from './screens/Analysis'
 import Help from './screens/Help';
 import About from './screens/About';
+import Specifications from './screens/Specifications';
 
 
 function App() {
@@ -16,6 +17,8 @@ function App() {
           <Route component={Analysis} path='/' exact render/>
           <Route component={Help} path='/help' exact render/>
           <Route component={About} path='/about' exact render/>
+          <Route component={Specifications} path='/check' exact render/>
+
        </Switch>
        </div>
    </Router>

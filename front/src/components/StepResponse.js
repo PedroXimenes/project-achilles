@@ -1,5 +1,6 @@
 import React from 'react'
 import { VictoryLine, VictoryChart, VictoryAxis, VictoryLabel, VictoryVoronoiContainer } from 'victory'
+import CheckBounds from './CheckBounds'
 
 const StepResponse = ({ input_data }) => {
 
@@ -13,12 +14,12 @@ const StepResponse = ({ input_data }) => {
         data_cl[index] = {"x": element, "y": input_data.y_axis_cl[index]};
     }); // Malha fechada
 
-    var S = input_data.step_info
+    const S = input_data.step_info
     
     let overshoot = [];
     let tr = [], ts = [], tp = [];
     let steadyState = [];
-    if(S !== null){
+    if(S){
         overshoot = S['Overshoot2'] !== 0?[
             {"x": S['PeakTime'], "y": S['SteadyStateValue'], label:`M = ${S['Overshoot2'].toPrecision(3)} %`},
             {"x": S['PeakTime'], "y": S['Peak']}
@@ -42,6 +43,7 @@ const StepResponse = ({ input_data }) => {
         ]
         
     }
+
     return (
         <div>
             <div className="step-response">
@@ -175,6 +177,8 @@ const StepResponse = ({ input_data }) => {
                     />
                    
                 </VictoryChart>
+                <CheckBounds/>
+            
             </div>
         </div>
     )

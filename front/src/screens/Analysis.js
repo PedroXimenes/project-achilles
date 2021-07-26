@@ -19,6 +19,7 @@ function Analysis() {
   }, []);
 
   const sendInfoOL = async (system) => {
+    console.log(system)
     if(system.load === true){
       setShowChartAnalysis(false)
       setShowLoading(true)
@@ -41,6 +42,16 @@ function Analysis() {
       input_data[index] = {"x": element, "y": data.y_axis_ol[index]}
     });
 
+    sessionStorage.setItem("x_axis_cl", data.x_axis_cl);
+    sessionStorage.setItem("y_axis_cl", data.y_axis_cl);
+    sessionStorage.setItem("overshoot", data.step_info.Overshoot2);
+    sessionStorage.setItem("PeakTime", data.step_info.PeakTime);
+    sessionStorage.setItem("SteadyStateValue", data.step_info.SteadyStateValue);
+    sessionStorage.setItem("Peak", data.step_info.Peak);
+    sessionStorage.setItem("RiseTime", data.step_info.RiseTime);
+    sessionStorage.setItem("SettlingTime", data.step_info.SettlingTime);
+
+    console.log("System analysis: ", data)
     setSystemAnalysis(data)
     setShowChartAnalysis(true)
   }

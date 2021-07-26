@@ -179,6 +179,10 @@ span {
   margin-left: 16px;
 }
 
+.span2 {
+  margin-left: 6px;
+}
+
 .line{
   width: 300px;
   left: 20px;
@@ -244,16 +248,45 @@ span {
   border: 50px black;
   background-color: rgb(255, 255, 255);
 }
-/* 
-.show-input-block{
+
+.checkBoundsButton {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  justify-content: start;
   align-items: center;
-  width: 95%;
-  height: 200px;
-  padding: 5% 20%;
-  margin-top: 20%;  
-  border: 50px black;
-  background-color: rgb(255, 255, 255);
-} */
+  width: 100%;
+  height: 100%;
+  
+}
+
+.checkBounds-text{
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  padding: 8px 0px 8px 16px;
+  list-style: none;
+  height: 50%;
+  margin-left: 0;
+}
+
+
+.checkBounds-icon{
+  font-size: 15px;
+}
+
+.checkBounds-text a{
+  text-decoration: none;
+  color: #0d59afe1;
+  font-size: 15px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  border-radius: 4px;
+}
+
+.checkBounds-text a:hover{
+  background-color: #1a83ff;
+  color: white;
+
+}

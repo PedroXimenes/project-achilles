@@ -1,6 +1,6 @@
 from flask import Flask, request
 import json
-from controller_control import calculate
+from controller_control import calculate, checkBounds
 from flask_cors import CORS
 # Initialize Flask
 app = Flask(__name__)
@@ -19,20 +19,27 @@ def health():
     return {"alive": True}
 
 @app.route('/analysis', methods=["GET", "POST"])
+@app.route('/check',  methods=["GET", "POST"])
+
 def analysis():
-    if request.method == "POST":
+    if request.method == "POST" and request.path == '/analysis':
         data = json.loads(request.data)
-        
-        hnum = list(map(float,data['hnum'].split(',')))
-        hden = list(map(float,data['hden'].split(',')))
-        gnum = list(map(float,data['gnum'].split(',')))
-        gden = list(map(float,data['gden'].split(',')))
-        
-        resp = calculate(hnum, hden, gnum, gden)
+
+        resp = calculate(data)
 
         return resp
-    
+
     return "Analysis"
+
+def check():
+    if request.method == "POST" and request.path == '/check':
+        specifications = json.loads(request.data)
+        # print(specifications)
+        # tags = checkBounds(specifications)
+
+        return specifications
+    return "Check Specifications"
+
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', threaded=True)

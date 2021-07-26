@@ -6,11 +6,13 @@ from scipy import signal
 import json
 import numpy as np
 
-def calculate(hnum=None, hden=None, gnum=None, gden=None):
-    h_t, h_y, g_t, g_y, series, S = stepResponse(hnum, hden, gnum, gden)
+def calculate(dataSp=None):
+    hnum, hden, gnum, gden = separateSystemOl(dataSp)
+
+    h_t, h_y, g_t, g_y, series, S, MF = stepResponse(hnum, hden, gnum, gden)
     
     mag, phase, omega, bode_info = bodeDiagram(series)
-    print(bode_info)
+    
     real, imag, klist = rootLocus(series)   
 
     poles = control.pole(series) 
@@ -18,8 +20,8 @@ def calculate(hnum=None, hden=None, gnum=None, gden=None):
     zero_real, zero_imag = separateRealImag(zeros)
 
     num_poles = len(poles)
-    num_zeros = len(zeros)   
-    
+    num_zeros = len(zeros) 
+
     fb_data = { 
                 "x_axis_ol": h_t.tolist(),
                 "y_axis_ol": h_y.tolist(),
@@ -46,6 +48,13 @@ def calculate(hnum=None, hden=None, gnum=None, gden=None):
   
     return data
 
+def separateSystemOl(data):
+    hnum = list(map(float,data['hnum'].split(',')))
+    hden = list(map(float,data['hden'].split(',')))
+    gnum = list(map(float,data['gnum'].split(',')))
+    gden = list(map(float,data['gden'].split(',')))
+    return hnum, hden, gnum, gden
+
 def stepResponse(hnum=None, hden=None, gnum=None, gden=None):
     #Process open loop step response
     sys = signal.TransferFunction(hnum, hden)
@@ -63,7 +72,7 @@ def stepResponse(hnum=None, hden=None, gnum=None, gden=None):
     print(S)
 
 
-    return t, y, T, Y, series, S
+    return t, y, T, Y, series, S, MF
                  
 def stepInfo(series):
     polesPos = verifyPolesPositive(series)
@@ -174,13 +183,26 @@ def checkYss(specifications, S, yss):
         sucesso_yss = True
     return sucesso_yss
 
-def checkBounds(specifications, S, MF):
+def checkBounds(specifications):
+    series = 0
+    MF = control.feedback(series, 1, -1)
+    S = stepInfo(MF)
+
     yss = finalValue(MF)
     sucesso_ts = checkSettlingTime(specifications, S)
     sucesso_overshoot = checkOvershoot(specifications, S, yss)
     sucesso_yss = checkYss(specifications, S, yss)
+
+    fb_data = {
+
+                "sucesso_ts": sucesso_ts,
+                "sucesso_overshoot": sucesso_overshoot,
+                "sucesso_yss": sucesso_yss,
+
+    }
+    data = json.dumps(fb_data)
     
-    return sucesso_ts, sucesso_overshoot, sucesso_yss
+    return data
 
 def separateTF(series):
     numerador = series.num[0][0]
