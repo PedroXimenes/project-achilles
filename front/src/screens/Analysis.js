@@ -6,16 +6,20 @@ import RootLocus from '../components/RootLocus'
 import StepResponse from '../components/StepResponse'
 import Sidebar from '../components/Sidebar'
 import Loading from '../components/Loading'
-
 import '../App.css'
 
+import useDataContext from '../components/DataContext'
+
 function Analysis() {
-  const [systemAnalysis, setSystemAnalysis] = useState([]);
+  const [dataAnalysis, setDataAnalysis] = useState([]);
   const [showChartAnalysis, setShowChartAnalysis] = useState(false);
   const [showLoading, setShowLoading] = useState(false);
+  // const {
+  //   dataAnalysis, setDataAnalysis,
+  // } = useDataContext()
 
   useEffect(() => {
-    fetch(`${apiBaseURL}/home`).then(res => res.json());
+    fetch(`${apiBaseURL}/analysis`).then(res => res.json());
   }, []);
 
   const sendInfoOL = async (system) => {
@@ -50,20 +54,20 @@ function Analysis() {
     sessionStorage.setItem("Peak", data.step_info.Peak);
     sessionStorage.setItem("RiseTime", data.step_info.RiseTime);
     sessionStorage.setItem("SettlingTime", data.step_info.SettlingTime);
+    sessionStorage.setItem("Yss", data.yss);
 
-    console.log("System analysis: ", data)
-    setSystemAnalysis(data)
+    setDataAnalysis(data)
     setShowChartAnalysis(true)
   }
-
+  
   return (
      
       <>
         <Sidebar onSend={sendInfoOL}/>
         { showLoading === true && <Loading />}
-        { showChartAnalysis === true && <StepResponse input_data={systemAnalysis} className="test"/>}
-        { showChartAnalysis === true && <BodeDiagram input_data={systemAnalysis} className="test"/>}
-        { showChartAnalysis === true && <RootLocus input_data={systemAnalysis} className="test"/>}
+        { showChartAnalysis === true && <StepResponse input_data={dataAnalysis} className="test"/>}
+        { showChartAnalysis === true && <BodeDiagram input_data={dataAnalysis} className="test"/>}
+        { showChartAnalysis === true && <RootLocus input_data={dataAnalysis} className="test"/>}
       </>
    
   );

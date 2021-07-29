@@ -6,11 +6,13 @@ import Analysis from './screens/Analysis'
 import Help from './screens/Help';
 import About from './screens/About';
 import Specifications from './screens/Specifications';
+import DataProvider from './components/DataContext';
 
 
 function App() {
 
   return (
+    <DataProvider>
      <Router >
      <div className="page">
        <Switch>
@@ -22,6 +24,7 @@ function App() {
        </Switch>
        </div>
    </Router>
+   </DataProvider>
 
   );
 }

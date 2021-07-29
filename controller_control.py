@@ -6,10 +6,10 @@ from scipy import signal
 import json
 import numpy as np
 
-def calculate(dataSp=None):
-    hnum, hden, gnum, gden = separateSystemOl(dataSp)
+def calculate(data=None):
+    hnum, hden, gnum, gden = separateSystemOl(data)
 
-    h_t, h_y, g_t, g_y, series, S, MF = stepResponse(hnum, hden, gnum, gden)
+    h_t, h_y, g_t, g_y, series, S, yss = stepResponse(hnum, hden, gnum, gden)
     
     mag, phase, omega, bode_info = bodeDiagram(series)
     
@@ -43,6 +43,7 @@ def calculate(dataSp=None):
                 "zero_imag": zero_imag,
                 "step_info": S,
                 "bode_info": bode_info,
+                "yss": yss,
                 }
     data = json.dumps(fb_data)
   
@@ -71,14 +72,16 @@ def stepResponse(hnum=None, hden=None, gnum=None, gden=None):
     S = stepInfo(MF)
     print(S)
 
+    yss = finalValue(MF)
 
-    return t, y, T, Y, series, S, MF
+
+    return t, y, T, Y, series, S, yss
                  
 def stepInfo(series):
     polesPos = verifyPolesPositive(series)
     zerosPos = verifyZerosPositive(series)
     if not polesPos:
-        return control.timeresp.step_info(series,zero_pos=zerosPos)
+        return control.timeresp.step_info(series,zero_pos=zerosPos,RiseTimeLimits=(0,1))
     return None
 
 def verifyPolesPositive(series):

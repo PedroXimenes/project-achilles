@@ -4,6 +4,7 @@ import {NavbarData} from './NavbarData'
 import '../index.css'
 import {IconContext} from 'react-icons'
 import ShowInput from './ShowInput'
+// import {useDataContext} from './DataContext'
 
 export const Sidebar = ({ onSend }) => {
     const [hnum, setHnum] = useState('')
@@ -12,6 +13,9 @@ export const Sidebar = ({ onSend }) => {
     const [gden, setGden] = useState('')
     const [load, setLoad] = useState(false)
     const [dataForShow, setDataForShow] = useState('')
+    // const {
+    //     dataAnalysis, setDataAnalysis,
+    // } = useDataContext()
 
     const onSubmit = (e) => {
         e.preventDefault()
@@ -49,18 +53,16 @@ export const Sidebar = ({ onSend }) => {
             alert('Por favor, digite apenas números.')
             return 
         } 
-        onSend({ hnum, hden, gnum, gden, load })  
         
-        setHnum('')
-        setHden('')
-        setGnum('')
-        setGden('')
-
         setDataForShow({hnum, hden, gnum, gden})
+    
+        // setDataAnalysis({hnum, hden, gnum, gden, load})
+
+        onSend({hnum, hden, gnum, gden, load})  
 
     }
 
-
+   
     return (
         <>
         <IconContext.Provider value={{color: '#fff'}}>     
@@ -76,6 +78,7 @@ export const Sidebar = ({ onSend }) => {
                     )
                 })}
             </div>
+        </IconContext.Provider>
         <nav className='nav-menu-active'>
             <h1 className="title-text">Project Achilles</h1> 
                 <ul className='nav-menu-items'>
@@ -111,7 +114,6 @@ export const Sidebar = ({ onSend }) => {
                 </form>
             </ul>
         </nav>
-            </IconContext.Provider>
         </>
 
     )

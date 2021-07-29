@@ -16,7 +16,7 @@ function Specifications() {
 
 
   useEffect(() => {
-    fetch(`${apiBaseURL}/home`).then(res => res.json());
+
     const x_axis_cl = sessionStorage.getItem("x_axis_cl");
     const y_axis_cl = sessionStorage.getItem("y_axis_cl");
     const overshoot = sessionStorage.getItem("overshoot");
@@ -25,30 +25,27 @@ function Specifications() {
     const peak = sessionStorage.getItem("Peak")
     const riseTime = sessionStorage.getItem("RiseTime");
     const settlingTime = sessionStorage.getItem("SettlingTime");
+    const yss = sessionStorage.getItem("Yss")
 
-    setDataStorage({x_axis_cl, y_axis_cl, overshoot, peak, steadyStateValue, peakTime, riseTime, settlingTime})
+    setDataStorage({x_axis_cl, y_axis_cl, overshoot, peak, steadyStateValue, peakTime, riseTime, settlingTime, yss})
   }, []);
   
   console.log("oq chega: ", dataStorage)
 
   const sendInfoCL = async (system) => {
-    console.log(system)
+    console.log(system.load)
     if(system.load === true){
       setShowChartAnalysis(false)
       setShowLoading(true)
     }
 
-    const res = await fetch( `${apiBaseURL}/check`,{
+    await fetch( `${apiBaseURL}/check`,{
       method: 'POST',
       headers: {
         'Content-type': 'application/json'
       },
       body: JSON.stringify(system)
     })
-
-    const data = await res.json()
-    console.log('Data: ' + data)
-    setShowLoading(false)
     
     setInputs(system)
     setShowLoading(false)
@@ -62,7 +59,6 @@ function Specifications() {
         <SidebarSp onSend={sendInfoCL}/>
         { showLoading === true && <Loading />}
         { showChartAnalysis === true && <StepCLTemplate data={{dataStorage, inputs}} className="test"/>}
-        {/* <StepCLTemplate input_data={dataStorage}/> */}
       </>
    
   );

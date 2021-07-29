@@ -1,5 +1,5 @@
 import React from 'react'
-import { VictoryLine, VictoryChart, VictoryScatter, VictoryAxis, VictoryLabel, createContainer, Circle} from 'victory'
+import { VictoryLine, VictoryChart, VictoryScatter, VictoryAxis, VictoryLabel, createContainer} from 'victory'
 import Xcomponent from "./Xcomponent"
 import Ocomponent from "./Ocomponent"
 

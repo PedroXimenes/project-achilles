@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { AiOutlineCheckCircle } from 'react-icons/ai'
 import { Link } from 'react-router-dom'
 
 export const CheckBounds = () => { 
     const [checkBounds, setCheckBounds] = useState(false)
-    const [screenShow, setScreenShow] = useState('')
+
     const checkBoundsButton = [
     {
         title: 'Check Bounds',
@@ -12,22 +12,10 @@ export const CheckBounds = () => {
         className: 'checkBounds-text',
         path: '/check'
     },
-    ]
-    // useEffect(()=> {
-    //     if(checkBounds === true){
-    //         setScreenShow("screenBox")
-    
-    //     }
-    //     else{
-
-    //         setScreenShow("")
-    //     }
-    // },[checkBounds])
-   
+    ]   
 
     return(
         <>
-            {screenShow}
             <div className="checkBoundsButton" onClick={() => setCheckBounds(!checkBounds)}>
                 {checkBoundsButton.map((item, index) => {
                     return (

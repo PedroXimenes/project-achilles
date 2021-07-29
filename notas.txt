@@ -31,10 +31,20 @@
 
 - (resolvido) Mostrar a função de transferência digitada pelo usuário
 
-- Inserir input para especificações
+- (resolvido) Inserir input para especificações
     - Overshoot
     - tempo de acomodação
     - variação (%) no regime estacionário
     
 - check custom bounds
 
+- proposta do tcc
+    introdução: descrever projeto de pedro
+    objetivos: acrescentar novas funcionalidades
+        - correções no projeto achiles
+        - adição de funcionalidades
+            - representação das funções de transferencia
+            - adição de detalhes nos gráficos
+            - declaração, apresentação e verificação de especificações
+        - melhorar a interface para o usuário
+    metodologia: ferramentas utiliazadas

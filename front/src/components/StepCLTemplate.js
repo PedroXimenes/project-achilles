@@ -1,18 +1,20 @@
 import React from 'react'
 import { VictoryLine, VictoryChart, VictoryAxis, VictoryLabel, VictoryVoronoiContainer } from 'victory'
+import CheckBounds from './CheckBounds'
 
 const StepCLTemplate = ({data}) => {
 
     console.log('stepCLT: ', data)
     let data_cl = [];
-    let overshoot = [];
+    let overshoot = [], peakMax = [];
     let tr = [], ts = [], tp = [];
-    let steadyState = [];
+    let trMax = [], tsMax = [], tpMax = [];
+    let steadyState = [], steadyStateInfBounds = [], steadyStateSupBounds = [];
 
     if(data){
         const input_data = data.dataStorage
         const specifications = data.inputs
-        console.log(specifications)
+
         const strToArray = (text) => {
             let array = []
             let value
@@ -40,7 +42,43 @@ const StepCLTemplate = ({data}) => {
         const Peak = parseFloat(input_data.peak)
         const RiseTime = parseFloat(input_data.riseTime)
         const SettlingTime = parseFloat(input_data.settlingTime)
-   
+        const Yss = parseFloat(input_data.yss)
+
+        const maxOvershoot = parseFloat(specifications.overshoot)
+        const maxPeakTime = parseFloat(specifications.peakTime)
+        const maxRiseTime = parseFloat(specifications.riseTime)
+        const maxSettlingTime = parseFloat(specifications.settlingTime)
+        const varSteadyState = parseFloat(specifications.varSteadyState)
+        const maxPeak = Yss * maxOvershoot / 100 + Yss
+        const sup_margin = (1. + varSteadyState / 100) * Yss 
+        const inf_margin = (1. - varSteadyState / 100) * Yss 
+
+        const checkSupLimit = (value,maxValue) => {
+            let sucesso = false
+            if(value <= maxValue){
+                sucesso = true
+            }
+            return sucesso
+        }
+
+        const checkYss = (InfValue, inf_margin, sup_margin) => {
+            let sucesso = false
+
+            if(InfValue >= inf_margin && InfValue <= sup_margin){
+                sucesso = true
+            }
+
+            return sucesso
+        }
+
+        const sucesso_ts = checkSupLimit(SettlingTime, maxSettlingTime)
+        const sucesso_tp = checkSupLimit(PeakTime, maxPeakTime)
+        const sucesso_tr = checkSupLimit(RiseTime, maxRiseTime)
+        const sucesso_overshoot = checkSupLimit(Peak, maxPeak)
+        const sucesso_yss = checkYss(SteadyStateValue, inf_margin, sup_margin)
+
+        console.log(sucesso_yss,sucesso_overshoot,sucesso_tp,sucesso_tr, sucesso_ts)
+
         overshoot = Overshoot !== 0?[
             {"x": PeakTime, "y": SteadyStateValue, label:`M = ${Overshoot.toPrecision(3)} %`},
             {"x": PeakTime, "y": Peak}
@@ -62,11 +100,39 @@ const StepCLTemplate = ({data}) => {
             {"x": PeakTime, "y": 0, label: "tp"},
             {"x": PeakTime, "y": Peak}
         ]
+
+        peakMax = Overshoot !== 0?[
+            {"x": 0, "y": maxPeak},
+            {"x": maxSettlingTime, "y": maxPeak}
+        ]:[]
+
+        steadyStateInfBounds = [
+            {"x": maxSettlingTime,"y": inf_margin},
+            {"x": data_cl[data_cl.length - 1].x,"y": inf_margin},
+           
+        ]
+        steadyStateSupBounds = [
+            {"x": maxSettlingTime,"y": sup_margin},
+            {"x": data_cl[data_cl.length - 1].x,"y": sup_margin},
+        ]
+        trMax = [
+            {"x": maxRiseTime, "y": 0, label: "tr max"},
+            {"x": maxRiseTime, "y": Yss}
+        ]
+        tsMax = maxSettlingTime <= data_cl[data_cl.length - 1].x?[
+            {"x": maxSettlingTime, "y": 0, label: "ts max"},
+            {"x": maxSettlingTime, "y": maxPeak}
+        ]:[]
+        tpMax = [
+            {"x": maxPeakTime, "y": 0, label: "tp max"},
+            {"x": maxPeakTime, "y": maxPeak}
+        ]
         
     }
 
     return (
-        <div className="step-response2">
+        <>
+        <div className="stepCLT">
             <VictoryChart height={250} width={350} 
             containerComponent={
                 <VictoryVoronoiContainer 
@@ -175,9 +241,115 @@ const StepCLTemplate = ({data}) => {
                         />
                     }
                 />
-                
+                <VictoryLine
+                    data = {peakMax}
+                    style={{ data: { stroke: "black", 
+                                        strokeWidth: 4}}
+                    }
+                    labelComponent={
+                        <VictoryLabel
+                            textAnchor='end'
+                            //dy={0}
+                            //dx={46}
+                            style={[
+                                { fontSize: 10, fill: 'purple', fontStyle: 'italic' }
+                            
+                            ]}
+                        />
+                    }
+                />
+                <VictoryLine
+                    data = {tpMax}
+                    style={{ data: { stroke: "black", 
+                                        strokeWidth: 2, 
+                                        strokeDasharray: "2,2"}}
+                    }
+                    labelComponent={
+                        <VictoryLabel
+                            textAnchor='end'
+                            //dx={11}
+                            //dy={147}
+                            style={[
+                                { fontSize: 10, fill: 'black', fontStyle: 'italic' }
+                            
+                            ]}
+                        />
+                    }
+                />
+                <VictoryLine
+                    data = {trMax}
+                    style={{ data: { stroke: "black", 
+                                        strokeWidth: 2, 
+                                        strokeDasharray: "2,2"}}
+                    }
+                    labelComponent={
+                        <VictoryLabel
+                            textAnchor='end'
+                            //dx={11}
+                            //dy={147}
+                            style={[
+                                { fontSize: 10, fill: 'black', fontStyle: 'italic' }
+                            
+                            ]}
+                        />
+                    }
+                />
+                <VictoryLine
+                    data = {tsMax}
+                    style={{ data: { stroke: "black", 
+                                        strokeWidth: 2, 
+                                        }}
+                    }
+                    labelComponent={
+                        <VictoryLabel
+                            textAnchor='end'
+                            //dx={11}
+                            //dy={147}
+                            style={[
+                                { fontSize: 10, fill: 'black', fontStyle: 'italic' }
+                            
+                            ]}
+                        />
+                    }
+                />
+                <VictoryLine
+                    data = {steadyStateInfBounds}
+                    style={{ data: { stroke: "purple", 
+                                        strokeWidth: 1}}
+                    }
+                    labelComponent={
+                        <VictoryLabel
+                            textAnchor='end'
+                            //dy={0}
+                            //dx={46}
+                            style={[
+                                { fontSize: 10, fill: 'purple', fontStyle: 'italic' }
+                            
+                            ]}
+                        />
+                    }
+                />
+                <VictoryLine
+                    data = {steadyStateSupBounds}
+                    style={{ data: { stroke: "purple", 
+                                        strokeWidth: 1}}
+                    }
+                    labelComponent={
+                        <VictoryLabel
+                            textAnchor='end'
+                            //dy={0}
+                            //dx={46}
+                            style={[
+                                { fontSize: 10, fill: 'purple', fontStyle: 'italic' }
+                            
+                            ]}
+                        />
+                    }
+                />
             </VictoryChart>
+
         </div>
+        </>
     )
 }
 
