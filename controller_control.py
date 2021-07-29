@@ -1,8 +1,6 @@
-import math
 import control
 import control.matlab
 from scipy import signal
-# from matplotlib import pyplot as plt
 import json
 import numpy as np
 
@@ -152,7 +150,7 @@ def separateRealImag(array):
 
 def finalValue(MF):
     num, den = separateTF(MF)  
-    return num[-1]/den[-1]   
+    return num[-1]/den[-1]  
 
 def checkSettlingTime(specifications, S):
     settlingTimeInput = specifications.settlingTime

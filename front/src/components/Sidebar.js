@@ -1,10 +1,10 @@
 import { Link } from 'react-router-dom'
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {NavbarData} from './NavbarData'
 import '../index.css'
 import {IconContext} from 'react-icons'
 import ShowInput from './ShowInput'
-// import {useDataContext} from './DataContext'
+import {useDataContext} from './DataContext'
 
 export const Sidebar = ({ onSend }) => {
     const [hnum, setHnum] = useState('')
@@ -13,12 +13,23 @@ export const Sidebar = ({ onSend }) => {
     const [gden, setGden] = useState('')
     const [load, setLoad] = useState(false)
     const [dataForShow, setDataForShow] = useState('')
-    // const {
-    //     dataAnalysis, setDataAnalysis,
-    // } = useDataContext()
+    const {
+       input, setInput,
+    } = useDataContext()
+
+    useEffect(()=>{
+        setHnum(input.hnum || '')
+        setHden(input.hden || '')
+        setGnum(input.gnum || '')
+        setGden(input.gden || '')
+        console.log('dataAnalysis',input)
+    },[input])
 
     const onSubmit = (e) => {
         e.preventDefault()
+
+        console.log('tipo: ', typeof hnum, 'hnum: ', hnum)
+
 
         if(!hnum) {
             alert('Por favor, digite um numerador para o processo')
@@ -56,9 +67,10 @@ export const Sidebar = ({ onSend }) => {
         
         setDataForShow({hnum, hden, gnum, gden})
     
-        // setDataAnalysis({hnum, hden, gnum, gden, load})
+        setInput({hnum, hden, gnum, gden})
 
         onSend({hnum, hden, gnum, gden, load})  
+
 
     }
 

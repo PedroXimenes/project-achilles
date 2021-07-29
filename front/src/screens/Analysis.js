@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { apiBaseURL } from '../config/index';
+// import { apiBaseURL } from '../config/index';
 
 import BodeDiagram from '../components/BodeDiagram'
 import RootLocus from '../components/RootLocus'
@@ -8,18 +8,28 @@ import Sidebar from '../components/Sidebar'
 import Loading from '../components/Loading'
 import '../App.css'
 
-import useDataContext from '../components/DataContext'
+import {useDataContext} from '../components/DataContext'
+import api from '../services/api';
 
 function Analysis() {
-  const [dataAnalysis, setDataAnalysis] = useState([]);
   const [showChartAnalysis, setShowChartAnalysis] = useState(false);
   const [showLoading, setShowLoading] = useState(false);
-  // const {
-  //   dataAnalysis, setDataAnalysis,
-  // } = useDataContext()
+  const {
+    dataAnalysis, setDataAnalysis,
+  } = useDataContext()
+
+
+  const loadAnalysis = async () => {
+    try {
+      const response = await api.get('/analysis')
+      console.log('Response: ', response)
+    } catch (error) {
+      console.error(error)
+    }
+  }
 
   useEffect(() => {
-    fetch(`${apiBaseURL}/analysis`).then(res => res.json());
+    loadAnalysis()
   }, []);
 
   const sendInfoOL = async (system) => {
@@ -28,36 +38,21 @@ function Analysis() {
       setShowChartAnalysis(false)
       setShowLoading(true)
     }
-
-    const res = await fetch( `${apiBaseURL}/analysis`,{
-      method: 'POST',
-      headers: {
-        'Content-type': 'application/json'
-      },
-      body: JSON.stringify(system)
-    })
     
-    const data = await res.json()
-    console.log('Data: ' + data)
-    setShowLoading(false)
+    try {
+      const {data} = await api.post('/analysis',{
+        ...system
+      })
+      console.log('Response: ', data)
+        
+      setShowLoading(false)
 
-    var input_data = []
-    data.x_axis_ol.forEach((element, index) => {
-      input_data[index] = {"x": element, "y": data.y_axis_ol[index]}
-    });
+      setDataAnalysis(data)
+      setShowChartAnalysis(true)
 
-    sessionStorage.setItem("x_axis_cl", data.x_axis_cl);
-    sessionStorage.setItem("y_axis_cl", data.y_axis_cl);
-    sessionStorage.setItem("overshoot", data.step_info.Overshoot2);
-    sessionStorage.setItem("PeakTime", data.step_info.PeakTime);
-    sessionStorage.setItem("SteadyStateValue", data.step_info.SteadyStateValue);
-    sessionStorage.setItem("Peak", data.step_info.Peak);
-    sessionStorage.setItem("RiseTime", data.step_info.RiseTime);
-    sessionStorage.setItem("SettlingTime", data.step_info.SettlingTime);
-    sessionStorage.setItem("Yss", data.yss);
-
-    setDataAnalysis(data)
-    setShowChartAnalysis(true)
+    } catch (error) {
+      console.error(error)
+    }
   }
   
   return (

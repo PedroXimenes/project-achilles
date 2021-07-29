@@ -1,55 +1,42 @@
-import React, { useEffect, useState } from 'react';
-import { apiBaseURL } from '../config/index';
+import React, { useState } from 'react';
 
 import SidebarSp from '../components/SidebarSp'
 
 import '../App.css'
 import StepCLTemplate from '../components/StepCLTemplate';
 import Loading from '../components/Loading';
+import {useDataContext} from '../components/DataContext'
+import api from '../services/api';
 
 function Specifications() {
-  const [dataStorage, setDataStorage] = useState('')
   const [inputs, setInputs] = useState('')
-
   const [showChartAnalysis, setShowChartAnalysis] = useState(false);
   const [showLoading, setShowLoading] = useState(false);
+  const {
+    dataAnalysis
+  } = useDataContext()
 
-
-  useEffect(() => {
-
-    const x_axis_cl = sessionStorage.getItem("x_axis_cl");
-    const y_axis_cl = sessionStorage.getItem("y_axis_cl");
-    const overshoot = sessionStorage.getItem("overshoot");
-    const peakTime = sessionStorage.getItem("PeakTime");
-    const steadyStateValue = sessionStorage.getItem("SteadyStateValue");
-    const peak = sessionStorage.getItem("Peak")
-    const riseTime = sessionStorage.getItem("RiseTime");
-    const settlingTime = sessionStorage.getItem("SettlingTime");
-    const yss = sessionStorage.getItem("Yss")
-
-    setDataStorage({x_axis_cl, y_axis_cl, overshoot, peak, steadyStateValue, peakTime, riseTime, settlingTime, yss})
-  }, []);
-  
-  console.log("oq chega: ", dataStorage)
+  console.log('chegou em sp: ', dataAnalysis)
 
   const sendInfoCL = async (system) => {
-    console.log(system.load)
+    console.log('system', system)
     if(system.load === true){
       setShowChartAnalysis(false)
       setShowLoading(true)
     }
 
-    await fetch( `${apiBaseURL}/check`,{
-      method: 'POST',
-      headers: {
-        'Content-type': 'application/json'
-      },
-      body: JSON.stringify(system)
-    })
-    
-    setInputs(system)
-    setShowLoading(false)
-    setShowChartAnalysis(true)
+    try {
+      const {data} = await api.post('/check',{
+        ...system
+      })
+      console.log('Response: ', data)
+
+      setInputs(system)
+      setShowLoading(false)
+      setShowChartAnalysis(true)
+    }catch(error){
+      console.error(error)
+    }
 
   }
 
@@ -58,7 +45,7 @@ function Specifications() {
       <>
         <SidebarSp onSend={sendInfoCL}/>
         { showLoading === true && <Loading />}
-        { showChartAnalysis === true && <StepCLTemplate data={{dataStorage, inputs}} className="test"/>}
+        { showChartAnalysis === true && <StepCLTemplate input_data={dataAnalysis} specifications={inputs} className="test"/>}
       </>
    
   );

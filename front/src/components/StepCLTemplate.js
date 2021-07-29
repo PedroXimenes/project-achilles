@@ -1,48 +1,32 @@
 import React from 'react'
 import { VictoryLine, VictoryChart, VictoryAxis, VictoryLabel, VictoryVoronoiContainer } from 'victory'
-import CheckBounds from './CheckBounds'
 
-const StepCLTemplate = ({data}) => {
+const StepCLTemplate = ({input_data,specifications}) => {
 
-    console.log('stepCLT: ', data)
+    console.log('input_data: ', input_data, '\n', 'sp', specifications)
+
     let data_cl = [];
     let overshoot = [], peakMax = [];
     let tr = [], ts = [], tp = [];
     let trMax = [], tsMax = [], tpMax = [];
     let steadyState = [], steadyStateInfBounds = [], steadyStateSupBounds = [];
 
-    if(data){
-        const input_data = data.dataStorage
-        const specifications = data.inputs
+    if(input_data && specifications){
 
-        const strToArray = (text) => {
-            let array = []
-            let value
-            let myStr = text.split(',')
-            for (let i = 0; i < myStr.length; i++){
-                value = parseFloat(myStr[i])
-                if(!isNaN(value)){
-                    array.push(value)
-                }
-                continue
-            }
-            return array
-        }
-
-        const x_cl = strToArray(input_data.x_axis_cl)
-        const y_cl = strToArray(input_data.y_axis_cl)
+        const x_cl = input_data.x_axis_cl
+        const y_cl = input_data.y_axis_cl
 
         x_cl.forEach((element, index) => {
             data_cl[index] = {"x": element, "y": y_cl[index]};
         });
 
-        const Overshoot = parseFloat(input_data.overshoot)
-        const PeakTime = parseFloat(input_data.peakTime)
-        const SteadyStateValue = parseFloat(input_data.steadyStateValue)
-        const Peak = parseFloat(input_data.peak)
-        const RiseTime = parseFloat(input_data.riseTime)
-        const SettlingTime = parseFloat(input_data.settlingTime)
-        const Yss = parseFloat(input_data.yss)
+        const Overshoot = input_data.step_info.Overshoot2
+        const PeakTime = input_data.step_info.PeakTime
+        const SteadyStateValue = input_data.step_info.SteadyStateValue
+        const Peak = input_data.step_info.Peak
+        const RiseTime = input_data.step_info.RiseTime
+        const SettlingTime = input_data.step_info.SettlingTime
+        const Yss = input_data.yss
 
         const maxOvershoot = parseFloat(specifications.overshoot)
         const maxPeakTime = parseFloat(specifications.peakTime)
@@ -138,8 +122,8 @@ const StepCLTemplate = ({data}) => {
                 <VictoryVoronoiContainer 
                     labels={({ datum }) => 
                     `Amplitude: ${datum.y.toPrecision(2)} 
-                    Tempo: ${datum.x.toPrecision(2)}s`  }/>} 
-                >   
+                    Tempo: ${datum.x.toPrecision(2)}s`  }/>}   
+            >
                 <VictoryLabel x={75} y={30} 
                     text="Resposta ao Degrau (Malha Fechada)" />
                 <VictoryAxis label="Tempo (s)" tickLabelComponent={<VictoryLabel dy={-7}/>}/>

@@ -9,6 +9,7 @@
     "@testing-library/user-event": "^12.6.3",
     "algebra": "^1.0.1",
     "algebra.js": "^0.2.6",
+    "axios": "^0.21.1",
     "bootstrap": "^4.6.0",
     "json-server": "^0.16.3",
     "mathjax-full": "^3.2.0",
