@@ -1,21 +1,26 @@
-@import url('https://fonts.googleapis.com/css2?family=Monospace:wght@300;400&display=swap');
-
+@import url("https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700&display=swap");
+/* 
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
+body,
+html {
+  height: 100%;
+  margin: 0;
+} */
+
 .navbar {
-  background-color:#f5f5f5;
+  background-color: #f5f5f5;
   height: 60px;
   display: flex;
   justify-content: start;
   align-items: center;
-
 }
 
-.page{
+.page {
   background-color: rgba(226, 223, 223, 0.692);
   opacity: 0.9;
   max-width: 85%;
@@ -23,16 +28,15 @@
   margin-left: 300px;
   min-height: 160%;
   position: absolute;
-
 }
 
-.loading{
+.loading {
   position: fixed;
   top: 50%;
   left: 50%;
 }
 
-.title-text{
+.title-text {
   margin: 20px 0 0 100px;
   text-align: center;
   color: #fff;
@@ -42,7 +46,7 @@
   margin: 50px 0 0 -200px;
 }
 
-.form-text{
+.form-text {
   text-decoration: none;
   color: #f5f5f5;
   font-size: 20px;
@@ -53,10 +57,8 @@
   padding: 0 16px;
   border-radius: 4px;
   margin-top: 10%;
-
-  
 }
-.form-text2{
+.form-text2 {
   text-decoration: none;
   color: #f5f5f5;
   font-size: 22px;
@@ -69,8 +71,7 @@
   margin-top: 20%;
 }
 
-.input-bar{
-
+.input-bar {
   width: 95%;
   height: 30px;
   right: 10px;
@@ -107,7 +108,6 @@
   width: 100%;
 }
 
-
 /* .input-bar:focus{
   padding: 0 16px;
   border-radius: 0px;
@@ -117,10 +117,10 @@
   display: flex;
   margin: 8px 0;
 } */
-.nav-menu-active{
-  left:0;
+.nav-menu-active {
+  left: 0;
   transition: 350ms;
-  background-color:  #378bec;
+  background-color: #378bec;
   width: 350px;
   display: flex;
   height: 100vh;
@@ -130,7 +130,7 @@
   top: 0;
 }
 
-.nav-text{
+.nav-text {
   display: flex;
   justify-content: start;
   align-items: center;
@@ -140,7 +140,7 @@
   margin-left: 70px;
 }
 
-.nav-text a{
+.nav-text a {
   text-decoration: none;
   color: #549ff5e1;
   font-size: 18px;
@@ -152,18 +152,17 @@
   border-radius: 4px;
 }
 
-.nav-icon{
+.nav-icon {
   font-size: 30px;
 }
 
-.nav-text a:hover{
+.nav-text a:hover {
   background-color: #1a83ff;
 }
 
 .nav-menu-items {
   margin: 75px 50px;
   width: 100%;
-
 }
 
 /* .navbar-toggle{
@@ -183,36 +182,36 @@ span {
   margin-left: 6px;
 }
 
-.line{
+.line {
   width: 300px;
   left: 20px;
   margin: 5% 0 5% 0;
-  border-bottom: .5px solid white;
+  border-bottom: 0.5px solid white;
   position: absolute;
   opacity: 50%;
 }
 
-.step-response{
+.step-response {
   width: 550px;
   margin: 60px 120px;
   background-color: #f5f5f5;
-  border-radius: 10px ;
+  border-radius: 10px;
 }
-.step-response2{
+.step-response2 {
   width: 550px;
   margin: -457px 760px;
   background-color: #f5f5f5;
-  border-radius: 10px ;
+  border-radius: 10px;
 }
 
-.stepCLT{
+.stepCLT {
   width: 75%;
   margin: 60px 120px;
   background-color: #f5f5f5;
-  border-radius: 10px ;
+  border-radius: 10px;
 }
 
-.step-box{
+.step-box {
   width: 350px;
   height: 400px;
   margin: 70px 50px;
@@ -221,27 +220,27 @@ span {
   background-color: rgb(255, 255, 255);
 }
 
-.bode-mag{
+.bode-mag {
   width: 550px;
   margin: 500px 120px;
   background-color: #f5f5f5;
-  border-top-left-radius: 10px ;
-  border-top-right-radius: 10px ;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
 }
 
-.bode-phase{
+.bode-phase {
   width: 550px;
   margin: -550px 120px;
   background-color: #f5f5f5;
-  border-bottom-left-radius: 10px ;
-  border-bottom-right-radius: 10px ;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
 
-.root-locus{
+.root-locus {
   width: 550px;
-  margin: -743px 760px;    
+  margin: -743px 760px;
   background-color: #f5f5f5;
-  border-radius: 10px ;
+  border-radius: 10px;
 }
 
 .show-input {
@@ -262,10 +261,9 @@ span {
   align-items: center;
   width: 100%;
   height: 100%;
-  
 }
 
-.checkBounds-text{
+.checkBounds-text {
   display: flex;
   justify-content: start;
   align-items: center;
@@ -275,12 +273,11 @@ span {
   margin-left: 0;
 }
 
-
-.checkBounds-icon{
+.checkBounds-icon {
   font-size: 15px;
 }
 
-.checkBounds-text a{
+.checkBounds-text a {
   text-decoration: none;
   color: #0d59afe1;
   font-size: 15px;
@@ -292,8 +289,7 @@ span {
   border-radius: 4px;
 }
 
-.checkBounds-text a:hover{
+.checkBounds-text a:hover {
   background-color: #1a83ff;
   color: white;
-
 }
