@@ -6,8 +6,6 @@ export const Button = styled.button`
   position: absolute;
   width: 24rem;
   height: 6.25rem;
-  /* left: 40rem;
-  top: 40rem; */
   background: ${Theme.pink};
   border: none;
   border-radius: 1.5rem;

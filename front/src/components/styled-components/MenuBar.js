@@ -1,24 +1,22 @@
 import React from "react";
 import styled from "styled-components";
-import { width, Theme } from "../../config";
+import { Theme } from "../../config";
 import { Row, Col, Grid } from "react-flexbox-grid";
 import { Logo } from "./Logo";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
-export const MenuBar = () => {
+export const MenuBar = ({ hasLogo }) => {
   const history = useHistory();
   return (
     <NavBar>
       <Grid fluid={true}>
         <Row>
+          <Col>{hasLogo && <Logo onClick={() => history.push("/home")} />}</Col>
           <Col>
-            <Logo hasLogo={true} />
+            <NavText onClick={() => history.push("/about")}>Sobre</NavText>
           </Col>
           <Col>
-            <NavText>Sobre</NavText>
-          </Col>
-          <Col>
-            <NavText> Ajuda</NavText>
+            <NavText onClick={() => history.push("/help")}> Ajuda</NavText>
           </Col>
         </Row>
       </Grid>
@@ -28,10 +26,11 @@ export const MenuBar = () => {
 
 const NavBar = styled.div`
   position: absolute;
-  width: ${width}px;
+  width: 100%;
   height: 7.5rem;
   left: 0;
   top: 0;
+  z-index: 1000000;
 
   background: rgba(253, 152, 44, 0.4);
 `;
@@ -52,4 +51,5 @@ const NavText = styled.h4`
   text-align: center;
 
   color: ${Theme.darkBlue};
+  cursor: pointer;
 `;

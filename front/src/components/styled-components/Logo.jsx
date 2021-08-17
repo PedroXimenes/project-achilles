@@ -4,14 +4,12 @@ import { Theme } from "../../config";
 import { ReactComponent as CtrlLogo } from "../../imgs-ac/ctrl.svg";
 import { ReactComponent as Arrow } from "../../imgs-ac/arrow.svg";
 
-export const Logo = ({ hasLogo }) => {
-  return hasLogo ? (
+export const Logo = () => {
+  return (
     <>
       <Ctrl />
       <ArrowLogo />
     </>
-  ) : (
-    []
   );
 };
 
@@ -62,4 +60,5 @@ const Ctrl = styled(CtrlLogo)`
   background: ${Theme.white};
   color: ${Theme.gray};
   border-radius: 1.1rem;
+  cursor: pointer;
 `;

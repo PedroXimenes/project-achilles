@@ -1,53 +1,42 @@
 import React from "react";
 import styled from "styled-components";
 import { Row, Col, Grid } from "react-flexbox-grid";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
-import step from "../imgs-ac/graficos/step.png";
-import bode from "../imgs-ac/graficos/bode.png";
-import roots from "../imgs-ac/graficos/roots.png";
-import { useScroll } from "../config";
 import {
-  StyledBackImg,
+  BackImg,
   Title,
   MenuBar,
   Button,
 } from "../components/styled-components";
 
 export const Home = () => {
-  const [blockScroll] = useScroll();
   const history = useHistory();
-  blockScroll();
   return (
     <>
-      {/* <Grid fluid={false}>
+      <BackImg />
+      <Grid fluid={false}>
         <Row>
-          <Col md={6}> */}
-      <MenuBar />
-      {/* </Col>
-        </Row> */}
-      <Wrapper>
-        {/* <Row>
-            <Col md={6}> */}
-        <Title />
-        {/* </Col>
+          <Col md={6}>
+            <MenuBar />
+          </Col>
+        </Row>
+        <Wrapper>
+          <Row>
+            <Col md={6}>
+              <Title />
+            </Col>
           </Row>
           <Row>
-            <Col md={6}> */}
-        <Button>
-          <Link to="/inputs">Começar</Link>
-        </Button>
-        {/* </Col>
-          </Row> */}
-      </Wrapper>
-      {/* <Row>
-          <Col md={3}> */}
-      <StepImg />
-      <BodeImg />
-      <RootsImg />
-      {/* </Col>
+            <Col md={6}>
+              <Button onClick={() => history.push("/inputs")}>Começar</Button>
+            </Col>
+          </Row>
+        </Wrapper>
+        <Row>
+          <Col md={3}></Col>
         </Row>
-      </Grid> */}
+      </Grid>
     </>
   );
 };
@@ -59,42 +48,6 @@ const Wrapper = styled.div`
 
   ${Button} {
     left: 18rem;
+    top: 40rem;
   }
-`;
-
-const StepImg = styled.img.attrs({
-  src: step,
-  alt: "",
-})`
-  position: relative;
-  width: 20.5rem;
-  height: 12.25rem;
-  left: 100rem;
-  top: 43rem;
-
-  transform: rotate(10.44deg);
-`;
-
-const BodeImg = styled.img.attrs({
-  src: bode,
-  alt: "",
-})`
-  position: relative;
-  width: 20.5rem;
-  height: 12.25rem;
-  left: 75rem;
-  top: 50rem;
-
-  transform: rotate(-9.64deg);
-`;
-
-const RootsImg = styled.img.attrs({
-  src: roots,
-  alt: "",
-})`
-  position: relative;
-  width: 20.5rem;
-  height: 12.25rem;
-  left: 38rem;
-  top: 55rem;
 `;
