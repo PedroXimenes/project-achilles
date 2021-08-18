@@ -21,7 +21,7 @@ export const Inputs = () => {
         <Row>
           <Col className="helpBox" md={3}>
             <Row className="help">
-              <Col className="helpText" md={6}>
+              <Col className="helpText" md={10}>
                 <HelpText>
                   Insira as respectivas funções de transferência do processo e
                   do controlador
@@ -30,7 +30,7 @@ export const Inputs = () => {
             </Row>
 
             <Row className="helpText">
-              <Col md={6}>
+              <Col md={10}>
                 <HelpText>
                   Insira as especificações do sistema em malha fechada
                 </HelpText>
@@ -40,45 +40,47 @@ export const Inputs = () => {
 
           <Col className="pinkBox" md={9}>
             <StyledBox>
-              <Row around={"md"}>
-                <Col md={5}>
-                  <SubTitle>Controlador</SubTitle>
-                </Col>
-                <Col md={2} />
-                <Col md={5}>
-                  <SubTitle>Processo</SubTitle>
-                </Col>
-
-                <Row className="Num">
-                  <Col md={3}>
-                    <InputTitle>Numerador</InputTitle>
+              <Row top={"md"} around={"md"}>
+                <Row className="Titles">
+                  <Col md={5}>
+                    <SubTitle>Controlador</SubTitle>
                   </Col>
-                  <Col md={3}>
-                    <Input />
-                  </Col>
-                  <Col md={3}>
-                    <InputTitle>Numerador</InputTitle>
-                  </Col>
-                  <Col md={3}>
-                    <Input />
+                  <Col md={2} />
+                  <Col md={5}>
+                    <SubTitle>Processo</SubTitle>
                   </Col>
                 </Row>
+                <Row center={"md"}>
+                  <Row className="Num" middle={"md"}>
+                    <Col md={3}>
+                      <InputTitle>Numerador</InputTitle>
+                    </Col>
+                    <Col md={3}>
+                      <Input />
+                    </Col>
+                    <Col md={3}>
+                      <Input />
+                    </Col>
+                    <Col md={3}>
+                      <InputTitle>Numerador</InputTitle>
+                    </Col>
+                  </Row>
 
-                <Row className="Den">
-                  <Col md={3}>
-                    <InputTitle>Denominador</InputTitle>
-                  </Col>
-                  <Col md={3}>
-                    <Input />
-                  </Col>
-                  <Col md={3}>
-                    <InputTitle>Denominador</InputTitle>
-                  </Col>
-                  <Col md={3}>
-                    <Input />
-                  </Col>
+                  <Row className="Den" middle={"md"}>
+                    <Col md={3}>
+                      <InputTitle>Denominador</InputTitle>
+                    </Col>
+                    <Col md={3}>
+                      <Input />
+                    </Col>
+                    <Col md={3}>
+                      <Input />
+                    </Col>
+                    <Col md={3}>
+                      <InputTitle>Denominador</InputTitle>
+                    </Col>
+                  </Row>
                 </Row>
-
                 <Row className="diagram">
                   <Col md={12}>
                     <BlockDiagram />
@@ -86,21 +88,24 @@ export const Inputs = () => {
                 </Row>
 
                 <Row className="esp">
-                  <Col md={12}>
+                  <Col md={12} center={"md"}>
                     <SubTitle>Especificações</SubTitle>
                   </Col>
                 </Row>
 
                 <Row className="tempos">
-                  <Col md={4}>
+                  <Col md={1} />
+                  <Col md={3}>
                     <InputTitle>Tempo de subida máximo (s)</InputTitle>
                     <Input />
                   </Col>
-                  <Col md={4}>
+                  <Col md={1} />
+                  <Col md={3}>
                     <InputTitle>Tempo de acomodação máximo (s)</InputTitle>
                     <Input />
                   </Col>
-                  <Col md={4}>
+                  <Col md={1} />
+                  <Col md={3}>
                     <InputTitle>Tempo de pico máximo (s)</InputTitle>
                     <Input />
                   </Col>
@@ -117,13 +122,13 @@ export const Inputs = () => {
                   </Col>
                   <Col md={4} />
                 </Row>
-                <Row>
-                  <Col>
-                    <Button onClick={() => history.push("/")}>Enviar</Button>
-                  </Col>
-                </Row>
               </Row>
             </StyledBox>
+            <Row className="button">
+              <Col md={6}>
+                <Button onClick={() => history.push("/")}>Enviar</Button>
+              </Col>
+            </Row>
           </Col>
         </Row>
       </Grid>
@@ -138,35 +143,33 @@ const Wrapper = styled.div`
   margin-left: 50rem;
 `;
 
-const SubTitleWrapper = styled.div`
+const ControlWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-left: 50rem;
+  margin: 1rem;
 `;
 
 const BlockDiagram = styled(blockDiagram)`
-  /* position: relative; */
-  /* margin-left: 50rem; */
-  width: 65%;
-  height: 120%;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-self: center;
+  margin: auto 2rem;
 `;
 
 const StyledBox = styled.div`
-  /* position: absolute; */
+  box-sizing: border-box;
   display: fixed;
-  width: 100%;
+  width: 90%;
   height: 131%;
-  margin-top: 1.2rem;
-  /* left: 364px;
-  top: 50px; */
+  margin: 1.2rem auto;
+  padding: 1.2rem;
 
   background: ${Theme.lightPink};
-  /* background-repeat: no-repeat; */
-  /* background-position: bottom; */
   background-size: cover;
-  z-index: -1;
-  /* filter: blur(5px); */
   border-radius: 23px;
   z-index: -1;
 `;
