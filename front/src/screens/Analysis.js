@@ -1,20 +1,17 @@
 import React, { useState, useEffect } from "react";
-// import { apiBaseURL } from '../config/index';
-
+import styled from "styled-components";
 import BodeDiagram from "../components/BodeDiagram";
 import RootLocus from "../components/RootLocus";
 import StepResponse from "../components/StepResponse";
-import Sidebar from "../components/Sidebar";
-import Loading from "../components/Loading";
+import ShowInput from "../components/ShowInput";
+import { MenuBar, Step } from "../components/styled-components";
 import "../App.css";
-
-import { useDataContext } from "../components/DataContext";
 import api from "../services/api";
 
+import { useDataContext } from "../components/DataContext";
+
 export const Analysis = () => {
-  const [showChartAnalysis, setShowChartAnalysis] = useState(false);
-  const [showLoading, setShowLoading] = useState(false);
-  const { dataAnalysis, setDataAnalysis } = useDataContext();
+  const { dataAnalysis, input } = useDataContext();
 
   const loadAnalysis = async () => {
     try {
@@ -29,41 +26,32 @@ export const Analysis = () => {
     loadAnalysis();
   }, []);
 
-  const sendInfoOL = async (system) => {
-    console.log(system);
-    if (system.load === true) {
-      setShowChartAnalysis(false);
-      setShowLoading(true);
-    }
-
-    try {
-      const { data } = await api.post("/analysis", {
-        ...system,
-      });
-      console.log("Response: ", data);
-
-      setShowLoading(false);
-
-      setDataAnalysis(data);
-      setShowChartAnalysis(true);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   return (
     <>
-      <Sidebar onSend={sendInfoOL} />
-      {showLoading === true && <Loading />}
-      {showChartAnalysis === true && (
-        <StepResponse input_data={dataAnalysis} className="test" />
-      )}
-      {showChartAnalysis === true && (
+      <MenuBar hasLogo />
+      <Wrapper>
+        <ShowInput input_data={input} />
+        <Step input_data={dataAnalysis} />
+      </Wrapper>
+      <Wrapper className="mf">
+        <ColumnWrapper>
+          <StepResponse input_data={dataAnalysis} className="test" />
+          <RootLocus input_data={dataAnalysis} className="test" />
+        </ColumnWrapper>
         <BodeDiagram input_data={dataAnalysis} className="test" />
-      )}
-      {showChartAnalysis === true && (
-        <RootLocus input_data={dataAnalysis} className="test" />
-      )}
+      </Wrapper>
     </>
   );
 };
+
+const ColumnWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+`;
+
+const Wrapper = styled.div`
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+`;

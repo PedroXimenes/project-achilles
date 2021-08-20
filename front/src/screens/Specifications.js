@@ -4,7 +4,7 @@ import SidebarSp from "../components/SidebarSp";
 
 import "../App.css";
 import StepCLTemplate from "../components/StepCLTemplate";
-import Loading from "../components/Loading";
+import Loading from "../components/OldLoading";
 import { useDataContext } from "../components/DataContext";
 import api from "../services/api";
 

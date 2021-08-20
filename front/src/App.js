@@ -11,9 +11,9 @@ function App() {
       <Router>
         <>
           <Switch>
-            <Route component={Home} path="/home" exact render />
+            <Route component={Home} path="/" exact render />
             <Route component={Inputs} path="/inputs" exact render />
-            <Route component={Analysis} path="/" exact render />
+            <Route component={Analysis} path="/analysis" exact render />
             <Route component={Help} path="/help" exact render />
             <Route component={About} path="/about" exact render />
             <Route component={Specifications} path="/check" exact render />

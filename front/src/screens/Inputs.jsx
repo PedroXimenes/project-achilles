@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Row, Col, Grid } from "react-flexbox-grid";
 import styled from "styled-components";
 import { ReactComponent as blockDiagram } from "../imgs-ac/blockDiagram.svg";
+import { LoadingPage } from "./";
+import { useDataContext } from "../components/DataContext";
+import api from "../services/api";
 
 import {
   Button,
@@ -15,6 +18,160 @@ import { Theme } from "../config";
 
 export const Inputs = () => {
   const history = useHistory();
+  const [hnum, setHnum] = useState("");
+  const [hden, setHden] = useState("");
+  const [gnum, setGnum] = useState("");
+  const [gden, setGden] = useState("");
+  const [overshoot, setOvershoot] = useState("");
+  const [settlingTime, setSettlingTime] = useState("");
+  const [riseTime, setRiseTime] = useState("");
+  const [peakTime, setPeakTime] = useState("");
+  const [varSteadyState, setVarSteadyState] = useState("");
+  const [load, setLoad] = useState(false);
+  const [dataForShow, setDataForShow] = useState("");
+  const [sendInfo, setSendInfo] = useState("");
+
+  const { input, setInput } = useDataContext();
+  const [showChartAnalysis, setShowChartAnalysis] = useState(false);
+  const [showLoading, setShowLoading] = useState(false);
+  const { dataAnalysis, setDataAnalysis } = useDataContext();
+
+  useEffect(() => {
+    setHnum(input.hnum || "");
+    setHden(input.hden || "");
+    setGnum(input.gnum || "");
+    setGden(input.gden || "");
+    setOvershoot(input.overshoot || "");
+    setVarSteadyState(input.varSteadyState || "");
+    setSettlingTime(input.settlingTime || "");
+    setRiseTime(input.riseTime || "");
+    setPeakTime(input.peakTime || "");
+
+    console.log("inputs", input);
+  }, [input]);
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+
+    if (!hnum) {
+      alert("Por favor, digite um numerador para o processo");
+      return;
+    }
+    if (!hden) {
+      alert("Por favor, digite um denominador para o processo");
+      return;
+    }
+    if (!gnum) {
+      alert("Por favor, digite um numerador para o controlador");
+      return;
+    }
+    if (!gden) {
+      alert("Por favor, digite um denominador para o controlador");
+      return;
+    }
+
+    if (!hnum.match(/[0-9]+$/)) {
+      alert("Por favor, digite apenas números.");
+      return;
+    }
+    if (!hden.match(/[0-9]+$/)) {
+      alert("Por favor, digite apenas números.");
+      return;
+    }
+    if (!gnum.match(/[0-9]+$/)) {
+      alert("Por favor, digite apenas números.");
+      return;
+    }
+    if (!gden.match(/[0-9]+$/)) {
+      alert("Por favor, digite apenas números.");
+      return;
+    }
+    if (!overshoot) {
+      alert("Por favor, digite um overshoot máximo para o sistema");
+      return;
+    }
+    if (!settlingTime) {
+      alert("Por favor, digite um tempo de acomodação máximo para o sistema");
+      return;
+    }
+    if (!riseTime) {
+      alert("Por favor, digite um tempo de subida máximo para o sistema");
+      return;
+    }
+    if (!peakTime) {
+      alert("Por favor, digite um tempo de pico máximo para o sistema");
+      return;
+    }
+    if (!varSteadyState) {
+      alert(
+        "Por favor, digite a maior variação permitida em regime permanente"
+      );
+      return;
+    }
+
+    if (!overshoot.match(/[0-9]+$/)) {
+      alert("Por favor, digite apenas números.");
+      return;
+    }
+    if (!settlingTime.match(/[0-9]+$/)) {
+      alert("Por favor, digite apenas números.");
+      return;
+    }
+    if (!riseTime.match(/[0-9]+$/)) {
+      alert("Por favor, digite apenas números.");
+      return;
+    }
+    if (!peakTime.match(/[0-9]+$/)) {
+      alert("Por favor, digite apenas números.");
+      return;
+    }
+    if (!varSteadyState.match(/[0-9]+$/)) {
+      alert("Por favor, digite apenas números.");
+      return;
+    }
+
+    setDataForShow({ hnum, hden, gnum, gden });
+
+    setSendInfo({ hnum, hden, gnum, gden, load });
+
+    setInput({
+      hnum,
+      hden,
+      gnum,
+      gden,
+      overshoot,
+      settlingTime,
+      varSteadyState,
+      riseTime,
+      peakTime,
+      load,
+      showChartAnalysis,
+    });
+  };
+
+  useEffect(() => {
+    (async () => {
+      if (sendInfo.load === true) {
+        setShowChartAnalysis(false);
+        setShowLoading(true);
+      }
+      console.log("send info", sendInfo);
+      try {
+        const { data } = await api.post("/analysis", {
+          ...sendInfo,
+        });
+        console.log("Response: ", data);
+
+        setShowLoading(false);
+        setDataAnalysis(data);
+        setShowChartAnalysis(true);
+        history.push("/analysis");
+      } catch (error) {
+        console.error(error);
+      }
+    })();
+  }, [sendInfo]);
+
   return (
     <>
       <Grid fluid={true}>
@@ -40,136 +197,188 @@ export const Inputs = () => {
 
           <Col className="pinkBox" md={9}>
             <StyledBox>
-              <Row top={"md"} around={"md"}>
-                <Row className="Titles">
-                  <Col md={5}>
-                    <SubTitle>Controlador</SubTitle>
-                  </Col>
-                  <Col md={2} />
-                  <Col md={5}>
-                    <SubTitle>Processo</SubTitle>
-                  </Col>
-                </Row>
-                <Row center={"md"}>
-                  <Row className="Num" middle={"md"}>
-                    <Col md={3}>
-                      <InputTitle>Numerador</InputTitle>
-                    </Col>
-                    <Col md={3}>
-                      <Input />
-                    </Col>
-                    <Col md={3}>
-                      <Input />
-                    </Col>
-                    <Col md={3}>
-                      <InputTitle>Numerador</InputTitle>
-                    </Col>
-                  </Row>
+              <TitlesWrapper className="titles">
+                <SubTitle>Controlador</SubTitle>
+                <SubTitle>Processo</SubTitle>
+              </TitlesWrapper>
+              <form onSubmit={onSubmit}>
+                <Wrapper className="numerador">
+                  <InputTitle>Numerador</InputTitle>
+                  <GapWrapper>
+                    <Input
+                      type="text"
+                      placeholder="Exemplo: 1,2"
+                      value={hnum}
+                      onChange={(e) => setHnum(e.target.value)}
+                    />
+                    <Input
+                      type="text"
+                      placeholder="Exemplo: 1"
+                      value={gnum}
+                      onChange={(e) => setGnum(e.target.value)}
+                    />
+                  </GapWrapper>
+                  <InputTitle>Numerador</InputTitle>
+                </Wrapper>
 
-                  <Row className="Den" middle={"md"}>
-                    <Col md={3}>
-                      <InputTitle>Denominador</InputTitle>
-                    </Col>
-                    <Col md={3}>
-                      <Input />
-                    </Col>
-                    <Col md={3}>
-                      <Input />
-                    </Col>
-                    <Col md={3}>
-                      <InputTitle>Denominador</InputTitle>
-                    </Col>
-                  </Row>
-                </Row>
-                <Row className="diagram">
-                  <Col md={12}>
-                    <BlockDiagram />
-                  </Col>
-                </Row>
+                <Wrapper className="denominador">
+                  <InputTitle>Denominador</InputTitle>
+                  <GapWrapper>
+                    <Input
+                      type="text"
+                      placeholder="Exemplo: 1,2,3"
+                      value={hden}
+                      onChange={(e) => setHden(e.target.value)}
+                    />
+                    <Input
+                      type="text"
+                      placeholder="Exemplo: 1,2"
+                      value={gden}
+                      onChange={(e) => setGden(e.target.value)}
+                    />
+                  </GapWrapper>
 
-                <Row className="esp">
-                  <Col md={12} center={"md"}>
-                    <SubTitle>Especificações</SubTitle>
-                  </Col>
-                </Row>
+                  <InputTitle>Denominador</InputTitle>
+                </Wrapper>
 
-                <Row className="tempos">
-                  <Col md={1} />
-                  <Col md={3}>
+                <BlockDiagram />
+
+                <TitlesWrapper>
+                  <SubTitle>Especificações</SubTitle>
+                </TitlesWrapper>
+                <Wrapper>
+                  <InputWrapper>
                     <InputTitle>Tempo de subida máximo (s)</InputTitle>
-                    <Input />
-                  </Col>
-                  <Col md={1} />
-                  <Col md={3}>
+                    <Input
+                      type="text"
+                      placeholder="Exemplo: 1.2"
+                      value={riseTime}
+                      onChange={(e) => setRiseTime(e.target.value)}
+                    />
+                  </InputWrapper>
+                  <InputWrapper>
                     <InputTitle>Tempo de acomodação máximo (s)</InputTitle>
-                    <Input />
-                  </Col>
-                  <Col md={1} />
-                  <Col md={3}>
+                    <Input
+                      type="text"
+                      placeholder="Exemplo: 3.2"
+                      value={settlingTime}
+                      onChange={(e) => setSettlingTime(e.target.value)}
+                    />
+                  </InputWrapper>
+                  <InputWrapper>
                     <InputTitle>Tempo de pico máximo (s)</InputTitle>
-                    <Input />
-                  </Col>
-                </Row>
-
-                <Row className="perc">
-                  <Col md={4}>
+                    <Input
+                      type="text"
+                      placeholder="Exemplo: 2.1"
+                      value={peakTime}
+                      onChange={(e) => setPeakTime(e.target.value)}
+                    />
+                  </InputWrapper>
+                </Wrapper>
+                <PercWrapper>
+                  <InputWrapper>
                     <InputTitle>Variação em regime permanente (%)</InputTitle>
-                    <Input />
-                  </Col>
-                  <Col md={4}>
+                    <Input
+                      type="text"
+                      placeholder="Exemplo: 1"
+                      value={varSteadyState}
+                      onChange={(e) => setVarSteadyState(e.target.value)}
+                    />
+                  </InputWrapper>
+
+                  <InputWrapper>
                     <InputTitle>Overshoot máximo (%)</InputTitle>
-                    <Input />
-                  </Col>
-                  <Col md={4} />
-                </Row>
-              </Row>
+                    <Input
+                      type="text"
+                      placeholder="Exemplo: 18"
+                      value={overshoot}
+                      onChange={(e) => setOvershoot(e.target.value)}
+                    />
+                  </InputWrapper>
+                  <ButtonWrapper>
+                    <Button
+                      type="submit"
+                      onClick={() => {
+                        setLoad(true);
+                      }}
+                    >
+                      Enviar
+                    </Button>
+                  </ButtonWrapper>
+                </PercWrapper>
+              </form>
             </StyledBox>
-            <Row className="button">
-              <Col md={6}>
-                <Button onClick={() => history.push("/")}>Enviar</Button>
-              </Col>
-            </Row>
           </Col>
         </Row>
       </Grid>
+      {load && <LoadingPage />}
     </>
   );
 };
+
+const TitlesWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+  margin-right: 20px;
+  gap: 90px;
+`;
 
 const Wrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-left: 50rem;
 `;
 
-const ControlWrapper = styled.div`
+const GapWrapper = styled.div`
   display: flex;
+  gap: 150px;
+  ${Input} {
+    margin: 0.4rem 1.5rem;
+  }
+`;
+
+const InputWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin: 1rem;
+`;
+
+const PercWrapper = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  margin-right: 370px;
 `;
 
 const BlockDiagram = styled(blockDiagram)`
-  width: 100%;
-  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  align-self: center;
-  margin: auto 2rem;
+  margin-left: 45px;
+  margin-top: 30px;
+  margin: 30px 0 30px 45px;
+`;
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+  ${Button} {
+    top: 850px;
+  }
 `;
 
 const StyledBox = styled.div`
   box-sizing: border-box;
-  display: fixed;
-  width: 90%;
-  height: 131%;
-  margin: 1.2rem auto;
-  padding: 1.2rem;
-
+  width: 1041px;
+  height: 924px;
+  padding: 20px;
   background: ${Theme.lightPink};
   background-size: cover;
   border-radius: 23px;
   z-index: -1;
+  margin-top: 1rem;
 `;
