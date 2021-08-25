@@ -49,8 +49,8 @@ const StepWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 1000px;
-  margin: 160px 120px 160px 500px;
+  width: 65%;
+  margin: 69% 0 0 0;
   background-color: #f5f5f5;
-  border-radius: 10px;
+  border-radius: 20px;
 `;

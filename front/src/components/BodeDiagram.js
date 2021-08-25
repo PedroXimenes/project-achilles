@@ -141,6 +141,7 @@ const MagWrapper = styled.div`
   background-color: #f5f5f5;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
+  margin: 0px 10px;
 `;
 
 const PhaseWrapper = styled.div`
@@ -151,5 +152,6 @@ const PhaseWrapper = styled.div`
   background-color: #f5f5f5;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
+  margin: 0px 10px;
 `;
 export default BodeDiagram;

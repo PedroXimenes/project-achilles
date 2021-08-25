@@ -25,7 +25,7 @@ const StepCLTemplate = ({ input_data, specifications }) => {
     steadyStateInfBounds = [],
     steadyStateSupBounds = [];
 
-  if (input_data && specifications) {
+  if (input_data.step_info && specifications) {
     const x_cl = input_data.x_axis_cl;
     const y_cl = input_data.y_axis_cl;
 
@@ -114,176 +114,201 @@ const StepCLTemplate = ({ input_data, specifications }) => {
   return (
     <>
       <div>
-        <VictoryChart
-          height={250}
-          width={350}
-          containerComponent={
-            <VictoryVoronoiContainer
-              labels={({ datum }) =>
-                `Amplitude: ${datum.y.toPrecision(2)} 
+        {input_data.step_info && specifications ? (
+          <VictoryChart
+            height={250}
+            width={350}
+            containerComponent={
+              <VictoryVoronoiContainer
+                labels={({ datum }) =>
+                  `Amplitude: ${datum.y.toPrecision(2)} 
                     Tempo: ${datum.x.toPrecision(2)}s`
-              }
+                }
+                labelComponent={
+                  <VictoryTooltip
+                    style={{ fontSize: 7 }}
+                    flyoutStyle={{ strokeWidth: 0.5 }}
+                    flyoutWidth={70}
+                  />
+                }
+              />
+            }
+          >
+            <VictoryLabel
+              x={8.8}
+              y={20}
+              text="Resposta ao Degrau (Malha Fechada)"
+              style={{
+                fontSize: 12,
+              }}
+            />
+            <VictoryAxis
+              label="Tempo (s)"
+              tickLabelComponent={<VictoryLabel dy={-7} />}
+              style={{
+                axisLabel: { fontSize: 11, padding: 20 },
+                tickLabels: { fontSize: 9, padding: 10 },
+              }}
+            />
+            <VictoryAxis
+              dependentAxis
+              label="Amplitude"
+              axisLabelComponent={<VictoryLabel dy={-10} />}
+              tickLabelComponent={<VictoryLabel dx={8.8} />}
+              style={{
+                axisLabel: { fontSize: 11, padding: 20 },
+                tickLabels: { fontSize: 9, padding: 10 },
+              }}
+            />
+
+            <VictoryLegend
+              x={47}
+              y={35}
+              orientation="horizontal"
+              gutter={10}
+              symbolSpacer={5}
+              style={{
+                labels: { fontSize: 6 },
+              }}
+              data={[
+                { name: "tr max", symbol: { fill: "purple" } },
+                { name: "tp max", symbol: { fill: "pink" } },
+                { name: "ts max", symbol: { fill: "black" } },
+                {
+                  name: `M = ${input_data.step_info.Overshoot2.toPrecision(
+                    4
+                  )} %`,
+                  symbol: { fill: "red" },
+                },
+                { name: "yss", symbol: { fill: "green" } },
+              ]}
+            />
+
+            <VictoryLine
+              data={data_cl}
+              style={{ data: { stroke: "#378bec", strokeWidth: 1.5 } }}
+            />
+            <VictoryLine
+              data={steadyState}
+              style={{
+                data: {
+                  stroke: "green",
+                  strokeWidth: 1,
+                  strokeDasharray: "5,5",
+                },
+              }}
+            />
+            <VictoryLine
+              data={tr}
+              style={{
+                data: {
+                  stroke: "grey",
+                  strokeWidth: 1,
+                  strokeDasharray: "2,2",
+                },
+              }}
               labelComponent={
-                <VictoryTooltip
-                  style={{ fontSize: 7 }}
-                  flyoutStyle={{ strokeWidth: 0.5 }}
-                  flyoutWidth={70}
+                <VictoryLabel
+                  textAnchor="start"
+                  dx={2}
+                  style={[{ fontSize: 7, fill: "grey", fontStyle: "italic" }]}
                 />
               }
             />
-          }
-        >
-          <VictoryLabel
-            x={8.8}
-            y={20}
-            text="Resposta ao Degrau (Malha Fechada)"
-            style={{
-              fontSize: 12,
-            }}
-          />
-          <VictoryAxis
-            label="Tempo (s)"
-            tickLabelComponent={<VictoryLabel dy={-7} />}
-            style={{
-              axisLabel: { fontSize: 11, padding: 20 },
-              tickLabels: { fontSize: 9, padding: 10 },
-            }}
-          />
-          <VictoryAxis
-            dependentAxis
-            label="Amplitude"
-            axisLabelComponent={<VictoryLabel dy={-10} />}
-            tickLabelComponent={<VictoryLabel dx={8.8} />}
-            style={{
-              axisLabel: { fontSize: 11, padding: 20 },
-              tickLabels: { fontSize: 9, padding: 10 },
-            }}
-          />
+            <VictoryLine
+              data={ts}
+              style={{
+                data: {
+                  stroke: "grey",
+                  strokeWidth: 1,
+                  strokeDasharray: "2,2",
+                },
+              }}
+              labelComponent={
+                <VictoryLabel
+                  textAnchor="start"
+                  dx={2}
+                  style={[{ fontSize: 7, fill: "grey", fontStyle: "italic" }]}
+                />
+              }
+            />
+            <VictoryLine
+              data={tp}
+              style={{
+                data: {
+                  stroke: "grey",
+                  strokeWidth: 1,
+                  strokeDasharray: "2,2",
+                },
+              }}
+              labelComponent={
+                <VictoryLabel
+                  textAnchor="start"
+                  dx={2}
+                  style={[
+                    {
+                      fontSize: 7,
+                      fill: "grey",
+                      fontStyle: "italic",
+                    },
+                  ]}
+                />
+              }
+            />
+            <VictoryLine
+              data={overshoot}
+              style={{ data: { stroke: "red", strokeWidth: 1 } }}
+              // labelComponent={
+              //   <VictoryLabel
+              //     textAnchor="end"
+              //     style={[{ fontSize: 10, fill: "red", fontStyle: "italic" }]}
+              //   />
+              // }
+            />
 
-          <VictoryLegend
-            x={47}
-            y={35}
-            orientation="horizontal"
-            gutter={10}
-            symbolSpacer={5}
-            style={{
-              labels: { fontSize: 6 },
-            }}
-            data={[
-              { name: "tr max", symbol: { fill: "purple" } },
-              { name: "tp max", symbol: { fill: "pink" } },
-              { name: "ts max", symbol: { fill: "black" } },
-              {
-                name: `M = ${input_data.step_info.Overshoot2.toPrecision(4)} %`,
-                symbol: { fill: "red" },
-              },
-              { name: "yss", symbol: { fill: "green" } },
-            ]}
-          />
-
-          <VictoryLine
-            data={data_cl}
-            style={{ data: { stroke: "#378bec", strokeWidth: 1.5 } }}
-          />
-          <VictoryLine
-            data={steadyState}
-            style={{
-              data: { stroke: "green", strokeWidth: 1, strokeDasharray: "5,5" },
-            }}
-          />
-          <VictoryLine
-            data={tr}
-            style={{
-              data: { stroke: "grey", strokeWidth: 1, strokeDasharray: "2,2" },
-            }}
-            labelComponent={
-              <VictoryLabel
-                textAnchor="start"
-                dx={2}
-                style={[{ fontSize: 7, fill: "grey", fontStyle: "italic" }]}
-              />
-            }
-          />
-          <VictoryLine
-            data={ts}
-            style={{
-              data: { stroke: "grey", strokeWidth: 1, strokeDasharray: "2,2" },
-            }}
-            labelComponent={
-              <VictoryLabel
-                textAnchor="start"
-                dx={2}
-                style={[{ fontSize: 7, fill: "grey", fontStyle: "italic" }]}
-              />
-            }
-          />
-          <VictoryLine
-            data={tp}
-            style={{
-              data: { stroke: "grey", strokeWidth: 1, strokeDasharray: "2,2" },
-            }}
-            labelComponent={
-              <VictoryLabel
-                textAnchor="start"
-                dx={2}
-                style={[
-                  {
-                    fontSize: 7,
-                    fill: "grey",
-                    fontStyle: "italic",
-                  },
-                ]}
-              />
-            }
-          />
-          <VictoryLine
-            data={overshoot}
-            style={{ data: { stroke: "red", strokeWidth: 1 } }}
-            // labelComponent={
-            //   <VictoryLabel
-            //     textAnchor="end"
-            //     style={[{ fontSize: 10, fill: "red", fontStyle: "italic" }]}
-            //   />
-            // }
-          />
-
-          <VictoryLine
-            data={tpMax}
-            style={{
-              data: {
-                stroke: "pink",
-                strokeWidth: 2,
-                strokeDasharray: "2,2",
-              },
-            }}
-          />
-          <VictoryLine
-            data={trMax}
-            style={{
-              data: {
-                stroke: "purple",
-                strokeWidth: 2,
-                strokeDasharray: "2,2",
-              },
-            }}
-          />
-          <VictoryLine
-            data={tsMax}
-            style={{ data: { stroke: "black", strokeWidth: 1 } }}
-          />
-          <VictoryLine
-            data={steadyStateInfBounds}
-            style={{ data: { stroke: "brown", strokeWidth: 1 } }}
-          />
-          <VictoryLine
-            data={steadyStateSupBounds}
-            style={{ data: { stroke: "brown", strokeWidth: 1 } }}
-          />
-          <VictoryLine
-            data={peakMax}
-            style={{ data: { stroke: "black", strokeWidth: 2 } }}
-          />
-        </VictoryChart>
+            <VictoryLine
+              data={tpMax}
+              style={{
+                data: {
+                  stroke: "pink",
+                  strokeWidth: 2,
+                  strokeDasharray: "2,2",
+                },
+              }}
+            />
+            <VictoryLine
+              data={trMax}
+              style={{
+                data: {
+                  stroke: "purple",
+                  strokeWidth: 2,
+                  strokeDasharray: "2,2",
+                },
+              }}
+            />
+            <VictoryLine
+              data={tsMax}
+              style={{ data: { stroke: "black", strokeWidth: 1 } }}
+            />
+            <VictoryLine
+              data={steadyStateInfBounds}
+              style={{ data: { stroke: "brown", strokeWidth: 1 } }}
+            />
+            <VictoryLine
+              data={steadyStateSupBounds}
+              style={{ data: { stroke: "brown", strokeWidth: 1 } }}
+            />
+            <VictoryLine
+              data={peakMax}
+              style={{ data: { stroke: "black", strokeWidth: 2 } }}
+            />
+          </VictoryChart>
+        ) : (
+          <h2>
+            Não é possível checar as especificações, uma vez que o sistema não
+            chega em regime permanente
+          </h2>
+        )}
       </div>
     </>
   );

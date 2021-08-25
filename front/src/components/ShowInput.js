@@ -2,14 +2,23 @@ import React, { useEffect, useState } from "react";
 import MathJax from "react-mathjax-preview";
 import styled from "styled-components";
 import { useDataContext } from "./DataContext";
-import { InputTitle } from "./styled-components";
+import { InputTitle, Button } from "./styled-components";
+import { useScroll } from "../config";
+import { useHistory } from "react-router";
 
-const ShowInput = ({ input_data }) => {
+const ShowInput = ({ input_data, scroll }) => {
   const [systemShow, setSystemShow] = useState("");
   const [controllerShow, setControllerShow] = useState("");
   const [clShow, setClShow] = useState("");
   const { dataAnalysis } = useDataContext();
+  const [blockScroll, allowScroll] = useScroll();
+  const history = useHistory();
 
+  if (scroll) {
+    blockScroll();
+  } else {
+    allowScroll();
+  }
   useEffect(() => {
     if (input_data) {
       let hnum = input_data.hnum;
@@ -91,7 +100,7 @@ const ShowInput = ({ input_data }) => {
     }
   }, [input_data, dataAnalysis]);
   return (
-    <div>
+    <InputWrapper>
       <Wrapper className="showInput">
         <StyledTitle>Processo</StyledTitle>
         <StyledMath math={systemShow} />
@@ -100,7 +109,14 @@ const ShowInput = ({ input_data }) => {
         <StyledTitle>Malha Fechada</StyledTitle>
         <StyledMath math={clShow} />
       </Wrapper>
-    </div>
+      <StyledButton
+        onClick={() => {
+          history.push("/inputs");
+        }}
+      >
+        Alterar entradas
+      </StyledButton>
+    </InputWrapper>
   );
 };
 
@@ -112,13 +128,12 @@ const Wrapper = styled.div`
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  width: 150%;
-  height: 150%;
-  padding: 25% 20%;
-  margin: 20% 20%;
-  border: 50px black;
-  border-radius: 10px;
+  width: 130%;
+  height: 130%;
+  padding: 10% 5%;
+  border-radius: 20px;
   background: #f5f5f5;
+  margin-bottom: 50px;
 `;
 
 const StyledTitle = styled(InputTitle)`
@@ -128,4 +143,17 @@ const StyledTitle = styled(InputTitle)`
 
 const StyledMath = styled(MathJax)`
   font-size: 20px;
+`;
+
+const StyledButton = styled(Button)`
+  width: 10%;
+  height: 39px;
+  font-size: 18px;
+  border-radius: 23px;
+`;
+const InputWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
 `;

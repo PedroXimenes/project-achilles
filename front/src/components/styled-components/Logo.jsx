@@ -1,14 +1,14 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { Theme } from "../../config";
 import { ReactComponent as CtrlLogo } from "../../imgs-ac/ctrl.svg";
 import { ReactComponent as Arrow } from "../../imgs-ac/arrow.svg";
 
-export const Logo = () => {
+export const Logo = ({ analysisTheme }) => {
   return (
     <>
-      <Ctrl />
-      <ArrowLogo />
+      <Ctrl analysisTheme={analysisTheme} />
+      <ArrowLogo analysisTheme={analysisTheme} />
     </>
   );
 };
@@ -23,7 +23,7 @@ export const CtrlImg = styled(CtrlLogo)`
   height: 6.25rem;
 
   background: ${Theme.white};
-  color: ${Theme.gray};
+  fill: ${Theme.gray};
   border-radius: 23px;
 `;
 
@@ -33,7 +33,7 @@ export const ArrowImg = styled(Arrow)`
   top: 22rem;
   width: 7rem;
   height: 6.25rem;
-  fill: solid ${Theme.gray};
+  fill: ${Theme.gray};
 
   transform: rotate(80.43deg);
 `;
@@ -44,8 +44,10 @@ const ArrowLogo = styled(Arrow)`
   top: 0.5rem;
   width: 5rem;
   height: 4.25rem;
-  fill: solid ${Theme.gray};
 
+  fill: ${Theme.gray};
+  cursor: pointer;
+  ${(props) => props.analysisTheme && { fill: Theme.white }};
   transform: rotate(80.43deg);
 `;
 
@@ -57,8 +59,11 @@ const Ctrl = styled(CtrlLogo)`
   top: 2rem;
   width: 5rem;
   height: 4.25rem;
+  fill: ${Theme.gray};
   background: ${Theme.white};
-  color: ${Theme.gray};
+
   border-radius: 1.1rem;
   cursor: pointer;
+  ${(props) => props.analysisTheme && { fill: Theme.white }};
+  ${(props) => props.analysisTheme && { background: Theme.darkBlue }};
 `;

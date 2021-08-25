@@ -26,7 +26,7 @@ export const Button = styled.button`
 
   &:focus,
   &:hover {
-    background: #c94721;
+    background: ${Theme.buttonHover};
   }
 
   &:disabled {

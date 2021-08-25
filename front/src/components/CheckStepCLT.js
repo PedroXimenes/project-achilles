@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { IoIosCheckmarkCircleOutline } from "react-icons/io";
 import { RiErrorWarningFill, RiCheckboxCircleFill } from "react-icons/ri";
 import styled from "styled-components";
 import { StyledText } from "../components/styled-components";
@@ -29,7 +28,7 @@ const CheckStepCLT = ({ input_data, specifications }) => {
   };
 
   useEffect(() => {
-    if (input_data && specifications) {
+    if (input_data.step_info && specifications) {
       const PeakTime = input_data.step_info.PeakTime;
       const SteadyStateValue = input_data.step_info.SteadyStateValue;
       const Peak = input_data.step_info.Peak;
@@ -63,48 +62,54 @@ const CheckStepCLT = ({ input_data, specifications }) => {
   );
 
   return (
-    <PageWrapper>
-      <Wrapper>
-        {sucesso_tr ? (
-          <RiCheckboxCircleFill color="green" size={20} />
-        ) : (
-          <RiErrorWarningFill color="red" size={20} />
-        )}
-        <StyledText>Tempo de subida </StyledText>
-      </Wrapper>
-      <Wrapper>
-        {sucesso_tp ? (
-          <RiCheckboxCircleFill color="green" size={20} />
-        ) : (
-          <RiErrorWarningFill color="red" size={20} />
-        )}
-        <StyledText>Tempo de pico </StyledText>
-      </Wrapper>
-      <Wrapper>
-        {sucesso_ts ? (
-          <RiCheckboxCircleFill color="green" size={20} />
-        ) : (
-          <RiErrorWarningFill color="red" size={20} />
-        )}
-        <StyledText>Tempo de acomodação </StyledText>
-      </Wrapper>
-      <Wrapper>
-        {sucesso_overshoot ? (
-          <RiCheckboxCircleFill color="green" size={20} />
-        ) : (
-          <RiErrorWarningFill color="red" size={20} />
-        )}
-        <StyledText>Overshoot </StyledText>
-      </Wrapper>
-      <Wrapper>
-        {sucesso_yss ? (
-          <RiCheckboxCircleFill color="green" size={20} />
-        ) : (
-          <RiErrorWarningFill color="red" size={20} />
-        )}
-        <StyledText>Variação em regime permanente </StyledText>
-      </Wrapper>
-    </PageWrapper>
+    <>
+      {input_data.step_info && specifications ? (
+        <PageWrapper>
+          <Wrapper>
+            {sucesso_tr ? (
+              <RiCheckboxCircleFill color="green" size={20} />
+            ) : (
+              <RiErrorWarningFill color="red" size={20} />
+            )}
+            <StyledText>Tempo de subida </StyledText>
+          </Wrapper>
+          <Wrapper>
+            {sucesso_tp ? (
+              <RiCheckboxCircleFill color="green" size={20} />
+            ) : (
+              <RiErrorWarningFill color="red" size={20} />
+            )}
+            <StyledText>Tempo de pico </StyledText>
+          </Wrapper>
+          <Wrapper>
+            {sucesso_ts ? (
+              <RiCheckboxCircleFill color="green" size={20} />
+            ) : (
+              <RiErrorWarningFill color="red" size={20} />
+            )}
+            <StyledText>Tempo de acomodação </StyledText>
+          </Wrapper>
+          <Wrapper>
+            {sucesso_overshoot ? (
+              <RiCheckboxCircleFill color="green" size={20} />
+            ) : (
+              <RiErrorWarningFill color="red" size={20} />
+            )}
+            <StyledText>Overshoot </StyledText>
+          </Wrapper>
+          <Wrapper>
+            {sucesso_yss ? (
+              <RiCheckboxCircleFill color="green" size={20} />
+            ) : (
+              <RiErrorWarningFill color="red" size={20} />
+            )}
+            <StyledText>Variação em regime permanente </StyledText>
+          </Wrapper>
+        </PageWrapper>
+      ) : (
+        <></>
+      )}
+    </>
   );
 };
 

@@ -46,7 +46,7 @@ const PageWrapper = styled.div`
   justify-content: right;
 `;
 
-const StyledClose = styled(RiCloseCircleLine)`
+const StyledClose = styled(GrClose)`
   color: ${Theme.darkBlue};
   size: 50px;
   margin: 1% 0 0 97%;

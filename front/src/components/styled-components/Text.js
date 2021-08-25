@@ -1,6 +1,21 @@
 import styled from "styled-components";
 import { Theme } from "../../config";
 
+export const StyledTitle = styled.h1`
+  box-sizing: border-box;
+  font-size: 80px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin: 2.5rem 0;
+  /* padding: 1rem; */
+  /* margin: 10rem 0 2.5rem 5rem; */
+
+  color: ${Theme.darkBlue};
+`;
+
 export const SubTitle = styled.h2`
   box-sizing: border-box;
   font-size: 2.5rem;
@@ -22,6 +37,7 @@ export const InputTitle = styled.h3`
   font-weight: 600;
 
   display: flex;
+  justify-content: center;
   align-items: center;
   text-align: center;
 
@@ -53,9 +69,9 @@ export const StyledText = styled.h4`
 
   display: flex;
   align-items: center;
-  text-align: center;
+  text-align: left;
 
-  margin: 0 0.5rem;
+  padding: 0 1.5rem;
 
   color: ${Theme.darkBlue};
 `;

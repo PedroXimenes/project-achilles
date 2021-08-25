@@ -131,4 +131,5 @@ const Wrapper = styled.div`
   width: 550px;
   background-color: #f5f5f5;
   border-radius: 10px;
+  margin: 10px 10px;
 `;

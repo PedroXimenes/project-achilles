@@ -15,7 +15,7 @@ export const BackImg = () => {
   );
 };
 
-const StyledBackImg = styled.div`
+export const StyledBackImg = styled.div`
   position: absolute;
   width: 100%;
   height: 100%;
@@ -24,6 +24,7 @@ const StyledBackImg = styled.div`
   background-position: bottom;
   background-size: cover;
   z-index: -1;
+  top: 0;
   overflow: hidden;
 `;
 
