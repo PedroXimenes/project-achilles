@@ -1,53 +1,54 @@
-import React, { useState } from "react";
+import React from "react";
+import styled from "styled-components";
+import { GrClose } from "react-icons/gr";
+import { RiCloseCircleLine } from "react-icons/ri";
+import { useHistory } from "react-router";
 
-import SidebarSp from "../components/SidebarSp";
-
-import "../App.css";
 import StepCLTemplate from "../components/StepCLTemplate";
-import Loading from "../components/OldLoading";
+import CheckStepCLT from "../components/CheckStepCLT";
 import { useDataContext } from "../components/DataContext";
-import api from "../services/api";
+import { Theme } from "../config";
 
 export const Specifications = () => {
-  const [inputs, setInputs] = useState("");
-  const [showChartAnalysis, setShowChartAnalysis] = useState(false);
-  const [showLoading, setShowLoading] = useState(false);
-  const { dataAnalysis } = useDataContext();
+  const { dataAnalysis, input } = useDataContext();
+  const history = useHistory();
 
   console.log("chegou em sp: ", dataAnalysis);
 
-  const sendInfoCL = async (system) => {
-    console.log("system", system);
-    if (system.load === true) {
-      setShowChartAnalysis(false);
-      setShowLoading(true);
-    }
-
-    try {
-      const { data } = await api.post("/check", {
-        ...system,
-      });
-      console.log("Response: ", data);
-
-      setInputs(system);
-      setShowLoading(false);
-      setShowChartAnalysis(true);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   return (
-    <>
-      <SidebarSp onSend={sendInfoCL} />
-      {showLoading === true && <Loading />}
-      {showChartAnalysis === true && (
+    <PageWrapper>
+      <Wrapper>
+        <StyledClose onClick={() => history.push("/analysis")} />
         <StepCLTemplate
           input_data={dataAnalysis}
-          specifications={inputs}
+          specifications={input}
           className="test"
         />
-      )}
-    </>
+      </Wrapper>
+      <CheckStepCLT input_data={dataAnalysis} specifications={input} />
+    </PageWrapper>
   );
 };
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 60%;
+  margin: 4% 1%;
+  background-color: #f5f5f5;
+  border-radius: 10px;
+`;
+
+const PageWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: right;
+`;
+
+const StyledClose = styled(RiCloseCircleLine)`
+  color: ${Theme.darkBlue};
+  size: 50px;
+  margin: 1% 0 0 97%;
+  cursor: pointer;
+`;

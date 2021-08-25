@@ -21,5 +21,15 @@ export const Button = styled.button`
 
   a {
     color: white;
+    text-decoration: none;
+  }
+
+  &:focus,
+  &:hover {
+    background: #c94721;
+  }
+
+  &:disabled {
+    background: #cccccc;
   }
 `;

@@ -50,38 +50,6 @@ const StepCLTemplate = ({ input_data, specifications }) => {
     const sup_margin = (1 + varSteadyState / 100) * Yss;
     const inf_margin = (1 - varSteadyState / 100) * Yss;
 
-    const checkSupLimit = (value, maxValue) => {
-      let sucesso = false;
-      if (value <= maxValue) {
-        sucesso = true;
-      }
-      return sucesso;
-    };
-
-    const checkYss = (InfValue, inf_margin, sup_margin) => {
-      let sucesso = false;
-
-      if (InfValue >= inf_margin && InfValue <= sup_margin) {
-        sucesso = true;
-      }
-
-      return sucesso;
-    };
-
-    const sucesso_ts = checkSupLimit(SettlingTime, maxSettlingTime);
-    const sucesso_tp = checkSupLimit(PeakTime, maxPeakTime);
-    const sucesso_tr = checkSupLimit(RiseTime, maxRiseTime);
-    const sucesso_overshoot = checkSupLimit(Peak, maxPeak);
-    const sucesso_yss = checkYss(SteadyStateValue, inf_margin, sup_margin);
-
-    console.log(
-      sucesso_yss,
-      sucesso_overshoot,
-      sucesso_tp,
-      sucesso_tr,
-      sucesso_ts
-    );
-
     overshoot =
       Overshoot !== 0
         ? [
@@ -145,7 +113,7 @@ const StepCLTemplate = ({ input_data, specifications }) => {
 
   return (
     <>
-      <div className="stepCLT">
+      <div>
         <VictoryChart
           height={250}
           width={350}
@@ -199,7 +167,6 @@ const StepCLTemplate = ({ input_data, specifications }) => {
             gutter={10}
             symbolSpacer={5}
             style={{
-              //   border: { stroke: "grey" },
               labels: { fontSize: 6 },
             }}
             data={[

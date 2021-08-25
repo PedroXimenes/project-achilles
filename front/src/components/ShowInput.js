@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
 import MathJax from "react-mathjax-preview";
 import styled from "styled-components";
+import { useDataContext } from "./DataContext";
 import { InputTitle } from "./styled-components";
 
 const ShowInput = ({ input_data }) => {
   const [systemShow, setSystemShow] = useState("");
   const [controllerShow, setControllerShow] = useState("");
+  const [clShow, setClShow] = useState("");
+  const { dataAnalysis } = useDataContext();
 
   useEffect(() => {
     if (input_data) {
@@ -13,6 +16,8 @@ const ShowInput = ({ input_data }) => {
       let hden = input_data.hden;
       let gnum = input_data.gnum;
       let gden = input_data.gden;
+      let clNum = dataAnalysis.cl_num;
+      let clDen = dataAnalysis.cl_den;
 
       const strToArray = (text) => {
         let array = [];
@@ -31,6 +36,8 @@ const ShowInput = ({ input_data }) => {
       const Hd = strToArray(hden);
       const Gn = strToArray(gnum);
       const Gd = strToArray(gden);
+      const Cln = strToArray(clNum);
+      const Cld = strToArray(clDen);
 
       const formatMathExpression = (value) => {
         let mathExpression = "";
@@ -50,8 +57,8 @@ const ShowInput = ({ input_data }) => {
           if (power === 1) {
             numberExpression = numberExpression.replace(`^${power}`, "");
           }
-          if (Math.abs(value[0]) === 1 && value.length > 1) {
-            numberExpression = numberExpression.replace(value[0], "");
+          if (Math.abs(value[i]) === 1 && value.length > 1 && power !== 0) {
+            numberExpression = numberExpression.replace(1, "");
           }
           mathExpression += numberExpression;
           power--;
@@ -67,16 +74,22 @@ const ShowInput = ({ input_data }) => {
       const controller_num = formatMathExpression(Gn);
       const controller_den = formatMathExpression(Gd);
 
+      const closedLoop_num = formatMathExpression(Cln);
+      const closedLoop_den = formatMathExpression(Cld);
+
       const system = `\`(${system_num})/(${system_den})\``;
       const controller = `\`(${controller_num})/(${controller_den})\``;
+      const closedLoop = `\`(${closedLoop_num})/(${closedLoop_den})\``;
 
       const mathSystem = String.raw`${system}`;
       const mathController = String.raw`${controller}`;
+      const mathClosedLoop = String.raw`${closedLoop}`;
 
       setSystemShow(mathSystem);
       setControllerShow(mathController);
+      setClShow(mathClosedLoop);
     }
-  }, [input_data]);
+  }, [input_data, dataAnalysis]);
   return (
     <div>
       <Wrapper className="showInput">
@@ -84,6 +97,8 @@ const ShowInput = ({ input_data }) => {
         <StyledMath math={systemShow} />
         <StyledTitle>Controlador</StyledTitle>
         <StyledMath math={controllerShow} />
+        <StyledTitle>Malha Fechada</StyledTitle>
+        <StyledMath math={clShow} />
       </Wrapper>
     </div>
   );

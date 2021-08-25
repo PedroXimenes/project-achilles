@@ -45,3 +45,17 @@ export const HelpText = styled.h2`
 
   color: black;
 `;
+
+export const StyledText = styled.h4`
+  position: relative;
+  font-size: 18px;
+  font-weight: 600;
+
+  display: flex;
+  align-items: center;
+  text-align: center;
+
+  margin: 0 0.5rem;
+
+  color: ${Theme.darkBlue};
+`;

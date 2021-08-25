@@ -1,12 +1,13 @@
 import control
 import control.matlab
+from numpy.lib.polynomial import polyadd, polymul
 from scipy import signal
 import json
 import numpy as np
 
 def calculate(data=None):
     hnum, hden, gnum, gden = separateSystemOl(data)
-
+    clNum, clDen = clSystem(hnum, hden, gnum, gden)
     h_t, h_y, g_t, g_y, series, S, yss = stepResponse(hnum, hden, gnum, gden)
     
     mag, phase, omega, bode_info = bodeDiagram(series)
@@ -42,6 +43,8 @@ def calculate(data=None):
                 "step_info": S,
                 "bode_info": bode_info,
                 "yss": yss,
+                "cl_num": clNum,
+                "cl_den": clDen,
                 }
     data = json.dumps(fb_data)
   
@@ -53,6 +56,16 @@ def separateSystemOl(data):
     gnum = list(map(float,data['gnum'].split(',')))
     gden = list(map(float,data['gden'].split(',')))
     return hnum, hden, gnum, gden
+
+def clSystem(hnum, hden, gnum, gden):
+    num = polymul(hnum, gnum)
+    den = polymul(hden, gden)
+    clNum = num
+    clDen = polyadd(num, den)
+    clNumstr = str(clNum).replace('. ',',').replace('.]','').replace('[','')
+    clDenstr = str(clDen).replace('. ',',').replace('.]','').replace('[','')
+    return clNumstr, clDenstr
+
 
 def stepResponse(hnum=None, hden=None, gnum=None, gden=None):
     #Process open loop step response

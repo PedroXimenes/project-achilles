@@ -28,13 +28,12 @@ export const Inputs = () => {
   const [peakTime, setPeakTime] = useState("");
   const [varSteadyState, setVarSteadyState] = useState("");
   const [load, setLoad] = useState(false);
-  const [dataForShow, setDataForShow] = useState("");
   const [sendInfo, setSendInfo] = useState("");
 
   const { input, setInput } = useDataContext();
   const [showChartAnalysis, setShowChartAnalysis] = useState(false);
   const [showLoading, setShowLoading] = useState(false);
-  const { dataAnalysis, setDataAnalysis } = useDataContext();
+  const { setDataAnalysis } = useDataContext();
 
   useEffect(() => {
     setHnum(input.hnum || "");
@@ -48,89 +47,11 @@ export const Inputs = () => {
     setPeakTime(input.peakTime || "");
 
     console.log("inputs", input);
+    console.log("len", input.lenght);
   }, [input]);
 
   const onSubmit = (e) => {
     e.preventDefault();
-
-    if (!hnum) {
-      alert("Por favor, digite um numerador para o processo");
-      return;
-    }
-    if (!hden) {
-      alert("Por favor, digite um denominador para o processo");
-      return;
-    }
-    if (!gnum) {
-      alert("Por favor, digite um numerador para o controlador");
-      return;
-    }
-    if (!gden) {
-      alert("Por favor, digite um denominador para o controlador");
-      return;
-    }
-
-    if (!hnum.match(/[0-9]+$/)) {
-      alert("Por favor, digite apenas números.");
-      return;
-    }
-    if (!hden.match(/[0-9]+$/)) {
-      alert("Por favor, digite apenas números.");
-      return;
-    }
-    if (!gnum.match(/[0-9]+$/)) {
-      alert("Por favor, digite apenas números.");
-      return;
-    }
-    if (!gden.match(/[0-9]+$/)) {
-      alert("Por favor, digite apenas números.");
-      return;
-    }
-    if (!overshoot) {
-      alert("Por favor, digite um overshoot máximo para o sistema");
-      return;
-    }
-    if (!settlingTime) {
-      alert("Por favor, digite um tempo de acomodação máximo para o sistema");
-      return;
-    }
-    if (!riseTime) {
-      alert("Por favor, digite um tempo de subida máximo para o sistema");
-      return;
-    }
-    if (!peakTime) {
-      alert("Por favor, digite um tempo de pico máximo para o sistema");
-      return;
-    }
-    if (!varSteadyState) {
-      alert(
-        "Por favor, digite a maior variação permitida em regime permanente"
-      );
-      return;
-    }
-
-    if (!overshoot.match(/[0-9]+$/)) {
-      alert("Por favor, digite apenas números.");
-      return;
-    }
-    if (!settlingTime.match(/[0-9]+$/)) {
-      alert("Por favor, digite apenas números.");
-      return;
-    }
-    if (!riseTime.match(/[0-9]+$/)) {
-      alert("Por favor, digite apenas números.");
-      return;
-    }
-    if (!peakTime.match(/[0-9]+$/)) {
-      alert("Por favor, digite apenas números.");
-      return;
-    }
-    if (!varSteadyState.match(/[0-9]+$/)) {
-      alert("Por favor, digite apenas números.");
-      return;
-    }
-
-    setDataForShow({ hnum, hden, gnum, gden });
 
     setSendInfo({ hnum, hden, gnum, gden, load });
 
@@ -151,23 +72,26 @@ export const Inputs = () => {
 
   useEffect(() => {
     (async () => {
-      if (sendInfo.load === true) {
-        setShowChartAnalysis(false);
-        setShowLoading(true);
-      }
-      console.log("send info", sendInfo);
-      try {
-        const { data } = await api.post("/analysis", {
-          ...sendInfo,
-        });
-        console.log("Response: ", data);
+      if (sendInfo) {
+        if (sendInfo.load === true) {
+          setShowChartAnalysis(false);
+          setShowLoading(true);
+        }
+        console.log("send info", sendInfo);
 
-        setShowLoading(false);
-        setDataAnalysis(data);
-        setShowChartAnalysis(true);
-        history.push("/analysis");
-      } catch (error) {
-        console.error(error);
+        try {
+          const { data } = await api.post("/analysis", {
+            ...sendInfo,
+          });
+          console.log("Response: ", data);
+
+          setShowLoading(false);
+          setDataAnalysis(data);
+          setShowChartAnalysis(true);
+          history.push("/analysis");
+        } catch (error) {
+          console.error(error);
+        }
       }
     })();
   }, [sendInfo]);
@@ -207,15 +131,15 @@ export const Inputs = () => {
                   <GapWrapper>
                     <Input
                       type="text"
-                      placeholder="Exemplo: 1,2"
-                      value={hnum}
-                      onChange={(e) => setHnum(e.target.value)}
-                    />
-                    <Input
-                      type="text"
                       placeholder="Exemplo: 1"
                       value={gnum}
                       onChange={(e) => setGnum(e.target.value)}
+                    />
+                    <Input
+                      type="text"
+                      placeholder="Exemplo: 1,2"
+                      value={hnum}
+                      onChange={(e) => setHnum(e.target.value)}
                     />
                   </GapWrapper>
                   <InputTitle>Numerador</InputTitle>
@@ -226,15 +150,15 @@ export const Inputs = () => {
                   <GapWrapper>
                     <Input
                       type="text"
-                      placeholder="Exemplo: 1,2,3"
-                      value={hden}
-                      onChange={(e) => setHden(e.target.value)}
-                    />
-                    <Input
-                      type="text"
                       placeholder="Exemplo: 1,2"
                       value={gden}
                       onChange={(e) => setGden(e.target.value)}
+                    />
+                    <Input
+                      type="text"
+                      placeholder="Exemplo: 1,2,3"
+                      value={hden}
+                      onChange={(e) => setHden(e.target.value)}
                     />
                   </GapWrapper>
 
@@ -298,6 +222,17 @@ export const Inputs = () => {
                   <ButtonWrapper>
                     <Button
                       type="submit"
+                      disabled={
+                        !hnum.match(/[0-9]+$/) ||
+                        !hden.match(/[0-9]+$/) ||
+                        !gnum.match(/[0-9]+$/) ||
+                        !gden.match(/[0-9]+$/) ||
+                        !riseTime.match(/[0-9]+$/) ||
+                        !settlingTime.match(/[0-9]+$/) ||
+                        !peakTime.match(/[0-9]+$/) ||
+                        !overshoot.match(/[0-9]+$/) ||
+                        !varSteadyState.match(/[0-9]+$/)
+                      }
                       onClick={() => {
                         setLoad(true);
                       }}
@@ -311,7 +246,7 @@ export const Inputs = () => {
           </Col>
         </Row>
       </Grid>
-      {load && <LoadingPage />}
+      {showLoading && <LoadingPage />}
     </>
   );
 };
