@@ -55,6 +55,13 @@ export const Inputs = () => {
   const onSubmit = (e) => {
     e.preventDefault();
 
+    if (hnum.length >= hden.length) {
+      alert(
+        "O denominador do processo tem que ter maior grau do que o numerador"
+      );
+      return;
+    }
+
     setSendInfo({ hnum, hden, gnum, gden, load });
 
     setInput({
