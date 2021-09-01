@@ -258,12 +258,6 @@ const StepCLTemplate = ({ input_data, specifications }) => {
             <VictoryLine
               data={overshoot}
               style={{ data: { stroke: "red", strokeWidth: 1 } }}
-              // labelComponent={
-              //   <VictoryLabel
-              //     textAnchor="end"
-              //     style={[{ fontSize: 10, fill: "red", fontStyle: "italic" }]}
-              //   />
-              // }
             />
 
             <VictoryLine

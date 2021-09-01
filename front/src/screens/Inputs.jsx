@@ -5,6 +5,8 @@ import { ReactComponent as blockDiagram } from "../imgs-ac/blockDiagram.svg";
 import { LoadingPage } from "./";
 import { useDataContext } from "../components/DataContext";
 import api from "../services/api";
+import { BsQuestionCircle, BsInfoCircle } from "react-icons/bs";
+import { IoIosArrowBack } from "react-icons/io";
 
 import {
   Button,
@@ -119,7 +121,7 @@ export const Inputs = () => {
             </Row>
           </Col>
 
-          <Col className="pinkBox" md={9}>
+          <Col className="pinkBox" md={8}>
             <StyledBox>
               <TitlesWrapper className="titles">
                 <SubTitle>Controlador</SubTitle>
@@ -133,12 +135,14 @@ export const Inputs = () => {
                       type="text"
                       placeholder="Exemplo: 1"
                       value={gnum}
+                      data-test="gnum"
                       onChange={(e) => setGnum(e.target.value)}
                     />
                     <Input
                       type="text"
                       placeholder="Exemplo: 1,2"
                       value={hnum}
+                      data-test="hnum"
                       onChange={(e) => setHnum(e.target.value)}
                     />
                   </GapWrapper>
@@ -152,12 +156,14 @@ export const Inputs = () => {
                       type="text"
                       placeholder="Exemplo: 1,2"
                       value={gden}
+                      data-test="gden"
                       onChange={(e) => setGden(e.target.value)}
                     />
                     <Input
                       type="text"
                       placeholder="Exemplo: 1,2,3"
                       value={hden}
+                      data-test="hden"
                       onChange={(e) => setHden(e.target.value)}
                     />
                   </GapWrapper>
@@ -177,6 +183,7 @@ export const Inputs = () => {
                       type="text"
                       placeholder="Exemplo: 1.2"
                       value={riseTime}
+                      data-test="riseTime"
                       onChange={(e) => setRiseTime(e.target.value)}
                     />
                   </InputWrapper>
@@ -186,6 +193,7 @@ export const Inputs = () => {
                       type="text"
                       placeholder="Exemplo: 3.2"
                       value={settlingTime}
+                      data-test="settlingTime"
                       onChange={(e) => setSettlingTime(e.target.value)}
                     />
                   </InputWrapper>
@@ -195,6 +203,7 @@ export const Inputs = () => {
                       type="text"
                       placeholder="Exemplo: 2.1"
                       value={peakTime}
+                      data-test="peakTime"
                       onChange={(e) => setPeakTime(e.target.value)}
                     />
                   </InputWrapper>
@@ -206,6 +215,7 @@ export const Inputs = () => {
                       type="text"
                       placeholder="Exemplo: 1"
                       value={varSteadyState}
+                      data-test="varSS"
                       onChange={(e) => setVarSteadyState(e.target.value)}
                     />
                   </InputWrapper>
@@ -216,12 +226,14 @@ export const Inputs = () => {
                       type="text"
                       placeholder="Exemplo: 18"
                       value={overshoot}
+                      data-test="overshoot"
                       onChange={(e) => setOvershoot(e.target.value)}
                     />
                   </InputWrapper>
                   <ButtonWrapper>
                     <Button
                       type="submit"
+                      data-test="submit"
                       disabled={
                         !hnum.match(/[0-9]+$/) ||
                         !hden.match(/[0-9]+$/) ||
@@ -244,12 +256,71 @@ export const Inputs = () => {
               </form>
             </StyledBox>
           </Col>
+          <Col md={1}>
+            <StyledQuestion
+              size="3%"
+              data-cy="iHelp"
+              onClick={() => {
+                history.push("/help");
+              }}
+            />
+            <StyledInfo
+              size="3%"
+              data-cy="iAbout"
+              onClick={() => {
+                history.push("/about");
+              }}
+            />
+            <StyledBack
+              size="3%"
+              data-cy="iHome"
+              onClick={() => {
+                history.push("/");
+              }}
+            />
+          </Col>
         </Row>
       </Grid>
       {showLoading && <LoadingPage />}
     </>
   );
 };
+
+const StyledBack = styled(IoIosArrowBack)`
+  position: absolute;
+  top: 4%;
+  left: 26%;
+
+  cursor: pointer;
+
+  &:hover {
+    color: ${Theme.buttonHover};
+  }
+`;
+
+const StyledInfo = styled(BsInfoCircle)`
+  position: absolute;
+  top: 8%;
+  right: 19%;
+
+  cursor: pointer;
+
+  &:hover {
+    color: ${Theme.buttonHover};
+  }
+`;
+
+const StyledQuestion = styled(BsQuestionCircle)`
+  position: absolute;
+  top: 4%;
+  right: 19%;
+
+  cursor: pointer;
+
+  &:hover {
+    color: ${Theme.buttonHover};
+  }
+`;
 
 const TitlesWrapper = styled.div`
   display: flex;

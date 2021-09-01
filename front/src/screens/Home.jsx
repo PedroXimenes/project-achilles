@@ -29,7 +29,9 @@ export const Home = () => {
           </Row>
           <Row>
             <Col md={6}>
-              <Button onClick={() => history.push("/inputs")}>Começar</Button>
+              <Button data-cy="start" onClick={() => history.push("/inputs")}>
+                Começar
+              </Button>
             </Col>
           </Row>
         </Wrapper>

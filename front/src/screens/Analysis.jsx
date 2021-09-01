@@ -12,6 +12,9 @@ import { useDataContext } from "../components/DataContext";
 export const Analysis = () => {
   const { dataAnalysis, input } = useDataContext();
 
+  let dataAnalysisLength = Object.keys(dataAnalysis).length;
+  let inputLength = Object.keys(input).length;
+
   const loadAnalysis = async () => {
     try {
       const response = await api.get("/analysis");
@@ -27,7 +30,7 @@ export const Analysis = () => {
 
   return (
     <>
-      <MenuBar hasLogo analysisTheme />
+      <MenuBar hasLogo />
       <Wrapper>
         <ShowInput input_data={input} scroll />
         <PlotWrapper>
@@ -52,6 +55,7 @@ const PlotWrapper = styled.div`
   align-items: center;
   height: 52rem;
   width: 75%;
+  margin-left: 5%;
   scroll-behavior: smooth;
   overflow-y: scroll;
 `;

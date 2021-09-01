@@ -5,28 +5,23 @@ import { Row, Col, Grid } from "react-flexbox-grid";
 import { Logo } from "./Logo";
 import { useHistory } from "react-router-dom";
 
-export const MenuBar = ({
-  hasLogo,
-  analysisTheme,
-  aboutDisabled,
-  helpDisabled,
-}) => {
+export const MenuBar = ({ hasLogo, aboutDisabled, helpDisabled }) => {
   const history = useHistory();
   return (
-    <NavBar analysisTheme={analysisTheme}>
+    <NavBar>
       <Grid fluid={true}>
         <Row>
           <Col>
             {hasLogo && (
               <h1 onClick={() => history.push("/")}>
-                <Logo analysisTheme={analysisTheme} />
+                <Logo />
               </h1>
             )}
           </Col>
           <Col>
             <NavText
-              analysisTheme={analysisTheme}
               disabled={aboutDisabled}
+              data-cy="about"
               onClick={() => history.push("/about")}
             >
               Sobre
@@ -34,8 +29,8 @@ export const MenuBar = ({
           </Col>
           <Col>
             <NavText
-              analysisTheme={analysisTheme}
               disabled={helpDisabled}
+              data-cy="help"
               onClick={() => history.push("/help")}
             >
               Ajuda
@@ -81,6 +76,9 @@ const NavText = styled.h4`
   border-radius: 20px;
 
   ${(props) => props.disabled && { color: Theme.white, cursor: "default" }};
+  ${(props) =>
+    props.disabled &&
+    props.analysisTheme && { color: "#00ACFF", cursor: "default" }};
 
   &:focus,
   &:hover {

@@ -20,7 +20,7 @@ const ShowInput = ({ input_data, scroll }) => {
     allowScroll();
   }
   useEffect(() => {
-    if (input_data) {
+    if (input_data.hnum) {
       let hnum = input_data.hnum;
       let hden = input_data.hden;
       let gnum = input_data.gnum;
@@ -100,23 +100,25 @@ const ShowInput = ({ input_data, scroll }) => {
     }
   }, [input_data, dataAnalysis]);
   return (
-    <InputWrapper>
-      <Wrapper className="showInput">
-        <StyledTitle>Processo</StyledTitle>
-        <StyledMath math={systemShow} />
-        <StyledTitle>Controlador</StyledTitle>
-        <StyledMath math={controllerShow} />
-        <StyledTitle>Malha Fechada</StyledTitle>
-        <StyledMath math={clShow} />
-      </Wrapper>
-      <StyledButton
-        onClick={() => {
-          history.push("/inputs");
-        }}
-      >
-        Alterar entradas
-      </StyledButton>
-    </InputWrapper>
+    <>
+      <InputWrapper>
+        <Wrapper className="showInput">
+          <StyledTitle>Processo</StyledTitle>
+          <StyledMath math={systemShow} />
+          <StyledTitle>Controlador</StyledTitle>
+          <StyledMath math={controllerShow} />
+          <StyledTitle>Malha Fechada</StyledTitle>
+          <StyledMath math={clShow} />
+        </Wrapper>
+        <StyledButton
+          onClick={() => {
+            history.push("/inputs");
+          }}
+        >
+          Alterar entradas
+        </StyledButton>
+      </InputWrapper>
+    </>
   );
 };
 
@@ -145,15 +147,17 @@ const StyledMath = styled(MathJax)`
   font-size: 20px;
 `;
 
-const StyledButton = styled(Button)`
+export const StyledButton = styled(Button)`
   width: 10%;
   height: 39px;
   font-size: 18px;
   border-radius: 23px;
 `;
+
 const InputWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   align-items: center;
+  margin-left: 10%;
 `;

@@ -4,7 +4,6 @@ export const Input = styled.input`
   box-sizing: border-box;
   background: white;
   border: white;
-  /* width: 80%; */
 
   width: 156px;
   outline: none;

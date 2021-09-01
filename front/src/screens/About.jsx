@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-// import { useHistory } from "react-router-dom";
 import { useScroll } from "../config";
 import {
   StyledBackImg,
@@ -14,6 +13,8 @@ import { FiSettings } from "react-icons/fi";
 import { AiFillGithub } from "react-icons/ai";
 import { GiThreeFriends } from "react-icons/gi";
 import { HiOutlineMail } from "react-icons/hi";
+import { GrLinkedinOption } from "react-icons/gr";
+import { BsDot } from "react-icons/bs";
 
 export const About = () => {
   const [blockScroll] = useScroll();
@@ -54,6 +55,8 @@ export const About = () => {
                 Contribuição de uma ferramenta gratuita que possa auxiliar
                 estudantes de engenharia elétrica e similares
               </StyledText>
+              <Space />
+
               <IconWrapper>
                 <AiFillGithub size="12%" />
               </IconWrapper>
@@ -66,6 +69,9 @@ export const About = () => {
               <StyledText>
                 Foco no usuário, para que a plataforma seja de fácil utilização
               </StyledText>
+              <Space />
+              <Space />
+
               <IconWrapper>
                 <GiThreeFriends size="12%" />
               </IconWrapper>
@@ -80,31 +86,85 @@ export const About = () => {
                 aplicação e ReactJs para interface do usuário
               </StyledText>
               <IconWrapper>
-                <FiSettings size="12%" />
+                <FiSettings size="11%" />
               </IconWrapper>
             </WrapperBox>
           </StyledBox>
         </BoxWrapper>
         <Foot>
-          <StyledText>Fale Conosco:</StyledText>
-          <StyledText>Ana Paula Flores de Melo</StyledText>
-          <StyledText>Pedro Henrique Oliveira Toscano Ximenes</StyledText>
-          <StyledText>Saulo Oliveira Dornellas Luiz</StyledText>
+          <FootWrapper>
+            <WrapperFoot>
+              <FootIconWrapper>
+                <GrLinkedinOption
+                  cursor="pointer"
+                  onClick={() =>
+                    window.location.replace(
+                      "https://www.linkedin.com/in/ana-paula-flores-de-melo-6328b9152/"
+                    )
+                  }
+                />
+                <StyledText>Ana Paula Flores de Melo</StyledText>
+
+                <HiOutlineMail />
+                <StyledText>anapaula.flores@ee.ufcg.edu.br</StyledText>
+              </FootIconWrapper>
+              <FootIconWrapper>
+                <GrLinkedinOption
+                  cursor="pointer"
+                  onClick={() =>
+                    window.location.replace(
+                      "https://www.linkedin.com/in/pedro-ximenes-763474181/"
+                    )
+                  }
+                />
+                <StyledText>Pedro Henrique O. T. Ximenes</StyledText>
+                <HiOutlineMail />
+                <StyledText>pedro.ximenes@ee.ufcg.edu.br</StyledText>
+              </FootIconWrapper>
+              <FootIconWrapper>
+                <BsDot color="#fda89e" />
+                <StyledText>Saulo Oliveira Dornellas Luiz</StyledText>
+                <HiOutlineMail />
+                <StyledText>saulo@dee.ufcg.edu.br</StyledText>
+              </FootIconWrapper>
+            </WrapperFoot>
+
+            <GitWrapper
+              onClick={() =>
+                window.location.replace(
+                  "https://github.com/PedroXimenes/project-achilles"
+                )
+              }
+            >
+              <StyledText>Achilles Control</StyledText>
+              <AiFillGithub size="8%" cursor="pointer" />
+            </GitWrapper>
+          </FootWrapper>
         </Foot>
       </Wrapper>
     </>
   );
 };
 
+const WrapperFoot = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+`;
+
 const Ctrl = styled(CtrlLogo)`
   width: 12%;
   background: none;
 `;
 
+const Space = styled.div`
+  height: 18px;
+`;
+
 const IconWrapper = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  margin: 3.5rem 1rem 0 0;
+  display: fixed;
+  margin: 4rem 1rem 0 0;
 `;
 
 const BoxWrapper = styled.div`
@@ -150,4 +210,25 @@ const StyledBoxTitle = styled(InputTitle)`
 const WrapperBox = styled.div`
   display: flex;
   flex-direction: column;
+`;
+
+const FootWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const GitWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+`;
+
+const FootIconWrapper = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  text-align: center;
 `;

@@ -3,7 +3,6 @@ import homeImg from "../../imgs-ac/home-background/home.png";
 import step from "../../imgs-ac/graficos/step.png";
 import bode from "../../imgs-ac/graficos/bode.png";
 import roots from "../../imgs-ac/graficos/roots.png";
-// import { width, height } from "../../config";
 
 export const BackImg = () => {
   return (

@@ -11,37 +11,45 @@ import {
 
 export const Step = ({ input_data }) => {
   let data = [];
-  input_data.x_axis_ol.forEach((element, index) => {
-    data[index] = { x: element, y: input_data.y_axis_ol[index] };
-  });
+  if (input_data.x_axis_ol) {
+    input_data.x_axis_ol.forEach((element, index) => {
+      data[index] = { x: element, y: input_data.y_axis_ol[index] };
+    });
+  }
   return (
-    <StepWrapper>
-      <VictoryChart
-        height={250}
-        width={350}
-        containerComponent={
-          <VictoryVoronoiContainer
-            labels={({ datum }) =>
-              `Amplitude: ${datum.y.toPrecision(2)} 
+    <>
+      {input_data.x_axis_ol ? (
+        <StepWrapper>
+          <VictoryChart
+            height={250}
+            width={350}
+            containerComponent={
+              <VictoryVoronoiContainer
+                labels={({ datum }) =>
+                  `Amplitude: ${datum.y.toPrecision(2)} 
       Tempo: ${datum.x.toPrecision(2)}s`
+                }
+              />
             }
-          />
-        }
-      >
-        <VictoryLabel x={75} y={30} text="Resposta ao Degrau (Processo)" />
-        <VictoryAxis
-          label="Tempo (s)"
-          tickLabelComponent={<VictoryLabel dy={-7} />}
-        />
-        <VictoryAxis
-          dependentAxis
-          label="Amplitude"
-          axisLabelComponent={<VictoryLabel dy={-10} />}
-          tickLabelComponent={<VictoryLabel dx={8.8} />}
-        />
-        <VictoryLine data={data} style={{ data: { stroke: "#378bec" } }} />
-      </VictoryChart>
-    </StepWrapper>
+          >
+            <VictoryLabel x={75} y={30} text="Resposta ao Degrau (Processo)" />
+            <VictoryAxis
+              label="Tempo (s)"
+              tickLabelComponent={<VictoryLabel dy={-7} />}
+            />
+            <VictoryAxis
+              dependentAxis
+              label="Amplitude"
+              axisLabelComponent={<VictoryLabel dy={-10} />}
+              tickLabelComponent={<VictoryLabel dx={8.8} />}
+            />
+            <VictoryLine data={data} style={{ data: { stroke: "#378bec" } }} />
+          </VictoryChart>
+        </StepWrapper>
+      ) : (
+        []
+      )}
+    </>
   );
 };
 

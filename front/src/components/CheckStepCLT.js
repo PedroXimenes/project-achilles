@@ -95,7 +95,7 @@ const CheckStepCLT = ({ input_data, specifications }) => {
             ) : (
               <RiErrorWarningFill color="red" size={20} />
             )}
-            <StyledText>Overshoot </StyledText>
+            <StyledText>Sobre-sinal </StyledText>
           </Wrapper>
           <Wrapper>
             {sucesso_yss ? (
@@ -103,7 +103,9 @@ const CheckStepCLT = ({ input_data, specifications }) => {
             ) : (
               <RiErrorWarningFill color="red" size={20} />
             )}
-            <StyledText>Variação em regime permanente </StyledText>
+            <StyledText>
+              Desvio da saída do seu valor de regime permanente
+            </StyledText>
           </Wrapper>
         </PageWrapper>
       ) : (
@@ -117,6 +119,7 @@ const PageWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  margin-bottom: 20%;
 `;
 
 const Wrapper = styled.div`

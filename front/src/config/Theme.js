@@ -16,4 +16,5 @@ export const Theme = {
   lightPink: "#FCDECF",
   buttonHover: "#EA9192",
   gray: "#6E7983",
+  lightGray: "#F6F6F6",
 };
