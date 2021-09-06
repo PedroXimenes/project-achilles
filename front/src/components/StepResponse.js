@@ -180,7 +180,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 550px;
+  width: 34rem;
   background-color: #f5f5f5;
   border-radius: 10px;
   margin: 10px 10px;

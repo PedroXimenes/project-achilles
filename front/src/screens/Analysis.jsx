@@ -12,9 +12,6 @@ import { useDataContext } from "../components/DataContext";
 export const Analysis = () => {
   const { dataAnalysis, input } = useDataContext();
 
-  let dataAnalysisLength = Object.keys(dataAnalysis).length;
-  let inputLength = Object.keys(input).length;
-
   const loadAnalysis = async () => {
     try {
       const response = await api.get("/analysis");

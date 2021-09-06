@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import { Theme } from "../../config";
-import { Row, Col, Grid } from "react-flexbox-grid";
 import { Logo } from "./Logo";
 import { useHistory } from "react-router-dom";
 
@@ -9,42 +8,41 @@ export const MenuBar = ({ hasLogo, aboutDisabled, helpDisabled }) => {
   const history = useHistory();
   return (
     <NavBar>
-      <Grid fluid={true}>
-        <Row>
-          <Col>
-            {hasLogo && (
-              <h1 onClick={() => history.push("/")}>
-                <Logo />
-              </h1>
-            )}
-          </Col>
-          <Col>
-            <NavText
-              disabled={aboutDisabled}
-              data-cy="about"
-              onClick={() => history.push("/about")}
-            >
-              Sobre
-            </NavText>
-          </Col>
-          <Col>
-            <NavText
-              disabled={helpDisabled}
-              data-cy="help"
-              onClick={() => history.push("/help")}
-            >
-              Ajuda
-            </NavText>
-          </Col>
-        </Row>
-      </Grid>
+      {hasLogo && (
+        <h1 onClick={() => history.push("/")}>
+          <Logo />
+        </h1>
+      )}
+      <Wrapper>
+        <NavText
+          disabled={aboutDisabled}
+          data-cy="about"
+          onClick={() => history.push("/about")}
+        >
+          Sobre
+        </NavText>
+
+        <NavText
+          disabled={helpDisabled}
+          data-cy="help"
+          onClick={() => history.push("/help")}
+        >
+          Ajuda
+        </NavText>
+      </Wrapper>
     </NavBar>
   );
 };
 
+const Wrapper = styled.div`
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  margin-left: 90rem;
+`;
+
 const NavBar = styled.div`
   position: absolute;
-  /* display: fixed; */
   width: 100%;
   height: 7.5rem;
   left: 0;
@@ -54,15 +52,14 @@ const NavBar = styled.div`
 `;
 
 const NavText = styled.h4`
-  position: relative;
-  width: 100px;
-  height: 50px;
+  width: 6.25rem;
+  height: 3.15rem;
   font-size: 1.6rem;
   font-weight: 500;
   box-sizing: border-box;
 
   margin: 2rem 2.8rem;
-  left: 90rem;
+  /* left: 90rem; */
 
   display: flex;
   justify-content: center;
