@@ -2,17 +2,8 @@
 
 import { apiURL, apiBaseURL } from "../../src/config";
 
-// var hnum = [];
-// var hden = [];
-// var gnum = [];
-// var gden = [];
-// var rT = [];
-// var sT = [];
-// var pT = [];
-// var vSS = [];
-// var ovst = [];
-
 var inputTestOk = [];
+var inputTestNotOk = [];
 
 describe("test inputs endpoints", () => {
   beforeEach(() => {
@@ -43,19 +34,9 @@ describe("test inputs form", () => {
     cy.fixture("inputsTestOk.json").then((item) => {
       inputTestOk = item;
     });
-    // cy.fixture("inputs.json").then((input) => {
-    //   input.map((item) => {
-    //     hnum = item.hnum;
-    //     hden = item.hden;
-    //     gnum = item.gnum;
-    //     gden = item.gden;
-    //     rT = item.rT;
-    //     sT = item.sT;
-    //     pT = item.pT;
-    //     vSS = item.vSS;
-    //     ovst = item.ovst;
-    //   });
-    // });
+    cy.fixture("inputsTestNotOk.json").then((item) => {
+      inputTestNotOk = item;
+    });
   });
 
   it("inputs be numbers", () => {
@@ -93,7 +74,6 @@ describe("test inputs form", () => {
       cy.get("[data-test=peakTime]").type(`${item.pT}`);
       cy.get("[data-test=varSS]").type(`${item.vSS}`);
       cy.get("[data-test=overshoot]").type(`${item.ovst}`);
-
       cy.get("[data-test=submit]").click();
 
       cy.request("POST", `${apiBaseURL}/analysis`, {
@@ -116,32 +96,24 @@ describe("test inputs form", () => {
       });
     });
   });
-
   it("alert must appear cus hnum >= hden", () => {
-    const hnum = "1,2,3";
-    const hden = "1,2,3";
-    const gnum = "1";
-    const gden = "1,2";
-    const rT = "1.2";
-    const sT = "3.2";
-    const pT = "2.1";
-    const vSS = "1";
-    const ovst = "18";
+    inputTestNotOk.map((item) => {
+      cy.visit(`${apiURL}/inputs`);
 
-    cy.get("[data-test=gnum]").type(`${gnum}`);
-    cy.get("[data-test=hnum]").type(`${hnum}`, { force: true });
-    cy.get("[data-test=gden]").type(`${gden}`);
-    cy.get("[data-test=hden]").type(`${hden}`, { force: true });
-    cy.get("[data-test=riseTime]").type(`${rT}`);
-    cy.get("[data-test=settlingTime]").type(`${sT}`);
-    cy.get("[data-test=peakTime]").type(`${pT}`);
-    cy.get("[data-test=varSS]").type(`${vSS}`);
-    cy.get("[data-test=overshoot]").type(`${ovst}`);
+      cy.get("[data-test=gnum]").type(`${item.gnum}`);
+      cy.get("[data-test=hnum]").type(`${item.hnum}`, { force: true });
+      cy.get("[data-test=gden]").type(`${item.gden}`);
+      cy.get("[data-test=hden]").type(`${item.hden}`, { force: true });
+      cy.get("[data-test=riseTime]").type(`${item.rT}`);
+      cy.get("[data-test=settlingTime]").type(`${item.sT}`);
+      cy.get("[data-test=peakTime]").type(`${item.pT}`);
+      cy.get("[data-test=varSS]").type(`${item.vSS}`);
+      cy.get("[data-test=overshoot]").type(`${item.ovst}`);
+      cy.get("[data-test=submit]").click();
 
-    cy.get("[data-test=submit]").click();
-
-    cy.location().should((location) => {
-      expect(location.pathname).to.eq("/inputs");
+      cy.location().should((location) => {
+        expect(location.pathname).to.eq("/inputs");
+      });
     });
   });
 });

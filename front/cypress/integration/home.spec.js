@@ -1,8 +1,9 @@
 /// <reference types="cypress" />
+import { apiURL } from "../../src/config";
 
 describe("test home endpoints", () => {
   beforeEach(() => {
-    cy.visit("http://localhost:3000/");
+    cy.visit(`${apiURL}/`);
   });
 
   it("press start button", () => {
