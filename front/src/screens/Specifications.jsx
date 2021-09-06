@@ -33,6 +33,7 @@ export const Specifications = () => {
             onClick={() => {
               history.push("/analysis");
             }}
+            data-cy="analysisB"
           >
             Voltar para análise
           </StButton>
@@ -40,6 +41,7 @@ export const Specifications = () => {
             onClick={() => {
               history.push("/inputs");
             }}
+            data-cy="cInput"
           >
             Alterar entradas
           </StButton2>

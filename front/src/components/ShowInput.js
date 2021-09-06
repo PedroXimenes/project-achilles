@@ -114,6 +114,7 @@ const ShowInput = ({ input_data, scroll }) => {
           onClick={() => {
             history.push("/inputs");
           }}
+          data-cy="changeInput"
         >
           Alterar entradas
         </StyledButton>

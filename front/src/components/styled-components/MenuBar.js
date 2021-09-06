@@ -9,7 +9,7 @@ export const MenuBar = ({ hasLogo, aboutDisabled, helpDisabled }) => {
   return (
     <NavBar>
       {hasLogo && (
-        <h1 onClick={() => history.push("/")}>
+        <h1 onClick={() => history.push("/")} data-cy="ctrl">
           <Logo />
         </h1>
       )}

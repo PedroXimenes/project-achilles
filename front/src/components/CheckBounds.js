@@ -23,7 +23,7 @@ export const CheckBounds = () => {
         {checkBoundsButton.map((item, index) => {
           return (
             <li key={index} className={item.className}>
-              <Link to={item.path}>
+              <Link data-cy="checkBounds" to={item.path}>
                 {item.icon}
                 <span className="span2">{item.title}</span>
               </Link>
