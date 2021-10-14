@@ -1,7 +1,6 @@
 from flask import Flask, request
 import json
-
-from controller_control import calculate
+from controller import calculate
 from flask_cors import CORS
 # Initialize Flask
 app = Flask(__name__)
@@ -20,10 +19,9 @@ def health():
     return {"alive": True}
 
 @app.route('/analysis', methods=["GET", "POST"])
-@app.route('/check',  methods=["GET", "POST"])
 
 def analysis():
-
+    resp = " "
     if request.method == "POST" and request.path == '/analysis':
         data = json.loads(request.data)
 
@@ -32,13 +30,6 @@ def analysis():
         return resp
 
     return "Analysis"
-
-def check():
-    if request.method == "POST" and request.path == '/check':
-        specifications = json.loads(request.data)
-        
-        return specifications
-    return "Check Specifications"
 
 
 if __name__ == '__main__':

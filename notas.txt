@@ -36,9 +36,9 @@
     - tempo de acomodação
     - variação (%) no regime estacionário
     
-- check custom bounds
+- (resolvido) check custom bounds
 
-- proposta do tcc
+- (resolvido) proposta do tcc
     introdução: descrever projeto de pedro
     objetivos: acrescentar novas funcionalidades
         - correções no projeto achiles
@@ -48,3 +48,7 @@
             - declaração, apresentação e verificação de especificações
         - melhorar a interface para o usuário
     metodologia: ferramentas utiliazadas
+
+- (perguntas) 
+    Qual a condição para a função de transferência do controlador?
+    
