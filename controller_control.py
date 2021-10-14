@@ -1,5 +1,6 @@
 import control
 import control.matlab
+import math
 from numpy.lib.polynomial import polyadd, polymul
 from scipy import signal
 import json
@@ -12,7 +13,7 @@ def calculate(data=None):
     
     mag, phase, omega, bode_info = bodeDiagram(series)
     
-    real, imag, klist = rootLocus(series)   
+    real, imag, klist, wn, zeta = rootLocus(series)   
 
     poles = control.pole(series) 
     zeros = control.zero(series)
@@ -45,6 +46,8 @@ def calculate(data=None):
                 "yss": yss,
                 "cl_num": clNum,
                 "cl_den": clDen,
+                "wn": wn,
+                "zeta": zeta,
                 }
     data = json.dumps(fb_data)
   
@@ -62,8 +65,9 @@ def clSystem(hnum, hden, gnum, gden):
     den = polymul(hden, gden)
     clNum = num
     clDen = polyadd(num, den)
-    clNumstr = str(clNum).replace('. ',',').replace('.]','').replace('[','')
-    clDenstr = str(clDen).replace('. ',',').replace('.]','').replace('[','')
+    clNumstr = str(clNum).replace('. ',',').replace('.]','').replace('[','').replace(']','')
+    clDenstr = str(clDen).replace('. ',',').replace('.]','').replace('[','').replace(']','')
+    print('cl...',clDenstr,clNumstr)
     return clNumstr, clDenstr
 
 
@@ -140,18 +144,23 @@ def rootLocus(series=None):
     j = 0
     real = np.zeros((total, shape))
     imag = np.zeros((total, shape))
-    
+    wn   = []
+    zeta = []
     for x in rlist:
         for i in x:
             if j == shape:
                 j = 0
             real[index][j] = i.real
             imag[index][j] = i.imag
+            if(j == 0):
+                w_n = math.sqrt(i.real**2 + i.imag**2)            
+                wn.append(np.round(w_n,3))
+                zeta.append(np.round(-i.real/w_n,3))
 
             j = j + 1
         index = index + 1
 
-    return real, imag, np.round(klist,3)
+    return real, imag, np.round(klist,3), wn, zeta
 
 def separateRealImag(array):
     parte_real = []
