@@ -4,8 +4,9 @@ import BodeDiagram from "../components/BodeDiagram";
 import RootLocus from "../components/RootLocus";
 import StepResponse from "../components/StepResponse";
 import ShowInput from "../components/ShowInput";
-import { MenuBar, Step } from "../components/styled-components";
-import "../App.css";
+import { Step } from "../components/StepResponseOL";
+import { MenuBar } from "../components/styled-components";
+
 import api from "../services/api";
 import { useDataContext } from "../components/DataContext";
 

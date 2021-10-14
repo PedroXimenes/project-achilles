@@ -1,7 +1,5 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import "./App.css";
-
 import { Home, Inputs, Analysis, Help, About, Specifications } from "./screens";
 import DataProvider from "./components/DataContext";
 

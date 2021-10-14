@@ -6,4 +6,3 @@ export { MenuBar } from "./MenuBar";
 export { Input } from "./Input";
 export * from "./Text";
 export { Loading } from "./Loading";
-export { Step } from "./StepResponseOL";

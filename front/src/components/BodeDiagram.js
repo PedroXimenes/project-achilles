@@ -22,14 +22,14 @@ const BodeDiagram = ({ input_data }) => {
 
   let gainMargin = [];
   let phaseMargin = [];
+  let criticFreq = [];
   let gainFreq = [];
-  let phaseFreq = [];
 
   if (input_data.bode_info) {
     gainMargin = input_data.bode_info["gainMargin"];
     phaseMargin = input_data.bode_info["phaseMargin"];
+    criticFreq = input_data.bode_info["criticFreq"];
     gainFreq = input_data.bode_info["gainFreq"];
-    phaseFreq = input_data.bode_info["phaseFreq"];
   }
 
   return (
@@ -65,19 +65,25 @@ const BodeDiagram = ({ input_data }) => {
                   data: { fill: "blue", type: "minus", size: 2 },
                 }}
                 data={[
-                  { name: `MG: ${gainMargin} dB`, labels: { fontSize: 12 } },
-                  { name: `wg: ${gainFreq} rad/s`, labels: { fontSize: 12 } },
+                  { name: `GM: ${gainMargin} dB`, labels: { fontSize: 12 } },
+                  {
+                    name: `𝜔180: ${criticFreq} rad/s`,
+                    labels: { fontSize: 12 },
+                  },
                 ]}
               />
 
               <VictoryAxis
                 dependentAxis
+                crossAxis={false}
                 label="Magnitude (dB)"
-                axisLabelComponent={<VictoryLabel dy={-30} />}
+                axisLabelComponent={<VictoryLabel dy={-13} />}
+                tickLabelComponent={<VictoryLabel dx={7} />}
                 style={{ grid: { stroke: () => "grey" } }}
               />
 
               <VictoryAxis
+                offsetY={50}
                 axisLabelComponent={<VictoryLabel dy={25} />}
                 orientation="bottom"
                 style={{ grid: { stroke: () => "grey" } }}
@@ -124,15 +130,17 @@ const BodeDiagram = ({ input_data }) => {
                   data: { fill: "blue", type: "minus", size: 2 },
                 }}
                 data={[
-                  { name: `MF: ${phaseMargin}°`, labels: { fontSize: 12 } },
-                  { name: `wf: ${phaseFreq} rad/s`, labels: { fontSize: 12 } },
+                  { name: `PM: ${phaseMargin}°`, labels: { fontSize: 12 } },
+                  { name: `𝜔PM: ${gainFreq} rad/s`, labels: { fontSize: 12 } },
                 ]}
               />
 
               <VictoryAxis
                 dependentAxis
-                label="Phase (º)"
-                axisLabelComponent={<VictoryLabel dy={-30} />}
+                crossAxis={false}
+                label="Fase (º)"
+                tickLabelComponent={<VictoryLabel dx={7} />}
+                axisLabelComponent={<VictoryLabel dy={-13} />}
                 style={{ grid: { stroke: () => "grey" } }}
               />
 
@@ -157,6 +165,7 @@ const BodeDiagram = ({ input_data }) => {
 
 const MagWrapper = styled.div`
   display: flex;
+  box-sizing: border-box;
   justify-content: center;
   align-items: center;
   width: 550px;
@@ -164,10 +173,13 @@ const MagWrapper = styled.div`
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
   margin: 0px 10px;
+  padding-left: 15px;
 `;
 
 const PhaseWrapper = styled.div`
   display: flex;
+  box-sizing: border-box;
+
   justify-content: center;
   align-items: center;
   width: 550px;
@@ -175,5 +187,6 @@ const PhaseWrapper = styled.div`
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
   margin: 0px 10px;
+  padding-left: 15px;
 `;
 export default BodeDiagram;

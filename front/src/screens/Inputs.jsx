@@ -55,9 +55,9 @@ export const Inputs = () => {
   const onSubmit = (e) => {
     e.preventDefault();
 
-    if (hnum.length >= hden.length) {
+    if (hnum.length > hden.length) {
       alert(
-        "O denominador do processo tem que ter maior grau do que o numerador"
+        "O denominador do processo tem que ter grau maior ou igual do que o do numerador"
       );
       return;
     }
@@ -242,15 +242,15 @@ export const Inputs = () => {
                       type="submit"
                       data-test="submit"
                       disabled={
-                        !hnum.match(/[0-9]+$/) ||
-                        !hden.match(/[0-9]+$/) ||
-                        !gnum.match(/[0-9]+$/) ||
-                        !gden.match(/[0-9]+$/) ||
-                        !riseTime.match(/[0-9]+$/) ||
-                        !settlingTime.match(/[0-9]+$/) ||
-                        !peakTime.match(/[0-9]+$/) ||
-                        !overshoot.match(/[0-9]+$/) ||
-                        !varSteadyState.match(/[0-9]+$/)
+                        !hnum.match(/^[0-9,.]+$/) ||
+                        !hden.match(/^[0-9,.]+$/) ||
+                        !gnum.match(/^[0-9,.]+$/) ||
+                        !gden.match(/^[0-9,.]+$/) ||
+                        !riseTime.match(/^[0-9.]+$/) ||
+                        !settlingTime.match(/^[0-9.]+$/) ||
+                        !peakTime.match(/^[0-9.]+$/) ||
+                        !overshoot.match(/^[0-9.]+$/) ||
+                        !varSteadyState.match(/^[0-9.]+$/)
                       }
                       onClick={() => {
                         setLoad(true);

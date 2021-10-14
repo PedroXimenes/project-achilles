@@ -73,13 +73,14 @@ const RootLocus = ({ input_data }) => {
   let max_Y_neg = Math.min.apply(Math, roots_y);
   let max_Y_pos = Math.max.apply(Math, roots_y);
   let delta_X_neg = 10;
-  let delta_X_pos = 0;
+  let delta_X_pos = 0.1;
   let delta_Y = 2;
 
   if (max_X_pos > 0) {
     delta_X_pos = 5;
     delta_X_neg = 5;
   }
+
   if (input_data.root_real) {
     input_data.root_imag.forEach((element, index) => {
       for (var i = 0; i < input_data.num_poles; i++) {
@@ -110,7 +111,9 @@ const RootLocus = ({ input_data }) => {
                   datum.l
                     ? `Real: ${datum.x.toPrecision(2)}
                             Imag: ${datum.y.toPrecision(2)}        
-                            Ganho: ${data.root_gain[datum.eventKey]}`
+                            Ganho: ${data.root_gain[datum.eventKey]}
+                            Freq. Natural: ${data.wn[datum.eventKey]}
+                            Coef. Amortecimento: ${data.zeta[datum.eventKey]}`
                     : null
                 }
               />
@@ -122,7 +125,14 @@ const RootLocus = ({ input_data }) => {
               tickLabelComponent={<VictoryLabel dy={-7} />}
               fixLabelOverlap={true}
             />
-            <VictoryAxis dependentAxis crossAxis={false} />
+
+            <VictoryAxis
+              dependentAxis
+              crossAxis={false}
+              label="Eixo Imaginário"
+              tickLabelComponent={<VictoryLabel dx={38} />}
+              axisLabelComponent={<VictoryLabel dy={76} />}
+            />
             <VictoryLabel x={115} y={30} text="Lugar das Raízes" />
             {items}
             <VictoryScatter

@@ -53,7 +53,7 @@ export const About = () => {
               <StyledBoxTitle>Open Source</StyledBoxTitle>
               <StyledText>
                 Contribuição de uma ferramenta gratuita que possa auxiliar
-                estudantes de engenharia elétrica e similares
+                estudantes de engenharia
               </StyledText>
               <Space />
 

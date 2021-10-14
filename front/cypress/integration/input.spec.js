@@ -96,7 +96,7 @@ describe("test inputs form", () => {
       });
     });
   });
-  it("alert must appear cus hnum >= hden", () => {
+  it("alert must appear cus hnum > hden", () => {
     inputTestNotOk.map((item) => {
       cy.visit(`${apiURL}/inputs`);
 
@@ -113,6 +113,11 @@ describe("test inputs form", () => {
 
       cy.location().should((location) => {
         expect(location.pathname).to.eq("/inputs");
+      });
+      cy.on("window:alert", (text) => {
+        expect(text).to.contains(
+          "O denominador do processo tem que ter grau maior ou igual do que o do numerador"
+        );
       });
     });
   });

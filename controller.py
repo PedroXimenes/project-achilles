@@ -9,9 +9,13 @@ import numpy as np
 def calculate(data=None):
     hnum, hden, gnum, gden = separateSystemOl(data)
     clNum, clDen = clSystem(hnum, hden, gnum, gden)
-    h_t, h_y, g_t, g_y, series, S, yss = stepResponse(hnum, hden, gnum, gden)
-    
-    mag, phase, omega, bode_info = bodeDiagram(series)
+
+    h_t, h_y, g_t, g_y, series, MF = stepResponse(hnum, hden, gnum, gden)
+    S = stepInfo(MF)
+    yss = finalValue(MF)
+
+    mag, phase, omega = bodeDiagram(series)
+    bode_info = bodeInfo(series)
     
     real, imag, klist, wn, zeta = rootLocus(series)   
 
@@ -67,36 +71,35 @@ def clSystem(hnum, hden, gnum, gden):
     clDen = polyadd(num, den)
     clNumstr = str(clNum).replace('. ',',').replace('.]','').replace('[','').replace(']','')
     clDenstr = str(clDen).replace('. ',',').replace('.]','').replace('[','').replace(']','')
-    print('cl...',clDenstr,clNumstr)
+   
     return clNumstr, clDenstr
 
-
 def stepResponse(hnum=None, hden=None, gnum=None, gden=None):
-    #Process open loop step response
-    sys = signal.TransferFunction(hnum, hden)
-    t, y = signal.step(sys)
+    try:
+        #Process open loop step response
+        sys = signal.TransferFunction(hnum, hden)
+        t, y = signal.step(sys)
 
-    # Calculate Step Response for Closed Loop System
-    system = control.tf(hnum, hden)
-    controller = control.tf(gnum, gden)
-    series = control.series(system, controller)
-    MF = control.feedback(series, 1, -1)
-    print(series, MF)  
+        # Calculate Step Response for Closed Loop System
+        system = control.tf(hnum, hden)
+        controller = control.tf(gnum, gden)
+        series = control.series(system, controller)
+        MF = control.feedback(series, 1, -1)
+        print(series, MF)  
+        
+        T, Y = control.step_response(MF)       
+
+
+        return t, y, T, Y, series, MF
     
-    T, Y = control.step_response(MF)
-    S = stepInfo(MF)
-    print(S)
-
-    yss = finalValue(MF)
-
-
-    return t, y, T, Y, series, S, yss
-                 
-def stepInfo(series):
-    polesPos = verifyPolesPositive(series)
-    zerosPos = verifyZerosPositive(series)
+    except:
+        print("something went wrong")
+             
+def stepInfo(TF):
+    polesPos = verifyPolesPositive(TF)
+    yss = finalValue(TF)
     if not polesPos:
-        return control.timeresp.step_info(series,zero_pos=zerosPos,RiseTimeLimits=(0,1))
+        return control.timeresp.step_info(TF,finalValue=yss,RiseTimeLimits=(0,1))
     return None
 
 def verifyPolesPositive(series):
@@ -106,73 +109,67 @@ def verifyPolesPositive(series):
         if i > 0:
             return True
     return False
-
-def verifyZerosPositive(series):
-    zeros_MF = control.zero(series)
-    zeros_real, _ = separateRealImag(zeros_MF)
-    for i in zeros_real:
-        if i > 0:
-            return True
-    return False
     
 def bodeDiagram(series=None):
     magnitude, phase, omega = control.bode(series, dB=True)
     mag_db = control.mag2db(magnitude)
     phase_deg = np.rad2deg(phase)
-    bode_info = bodeInfo(series)
-    return mag_db, phase_deg, omega, bode_info
+    
+    return mag_db, phase_deg, omega
 
 def bodeInfo(series):
     gm, pm, wg, wp = control.margin(series)
-    # Margem de ganho (GM): diferença para o ganho atingir o zero em WP  
-    # Margem de fase (PM): ângulo que falta para completar 180 graus em WG 
-    # Frequência de cruzamento de ganho (WG): quando o ganho cruza o zero
-    # Frequência de cruzamento de fase (WP): ponto que a fase cruza -180 graus
     bode_info = {
                 'gainMargin': str(round(gm,2)),
                 'phaseMargin': str(round(pm,2)),
-                'gainFreq': str(round(wg,2)),
-                'phaseFreq': str(round(wp,2)),
+                'criticFreq': str(round(wg,2)),
+                'gainFreq': str(round(wp,2)),
                 }
     return bode_info
     
 def rootLocus(series=None):
-    rlist, klist = control.root_locus(series)
-    
-    total, shape = rlist.shape
-    index = 0
-    j = 0
-    real = np.zeros((total, shape))
-    imag = np.zeros((total, shape))
-    wn   = []
-    zeta = []
-    for x in rlist:
-        for i in x:
-            if j == shape:
-                j = 0
-            real[index][j] = i.real
-            imag[index][j] = i.imag
-            if(j == 0):
-                w_n = math.sqrt(i.real**2 + i.imag**2)            
-                wn.append(np.round(w_n,3))
-                zeta.append(np.round(-i.real/w_n,3))
+    try:
+        rlist, klist = control.root_locus(series)
+        
+        total, shape = rlist.shape
+        index = 0
+        j = 0
+        real = np.zeros((total, shape))
+        imag = np.zeros((total, shape))
+        wn   = []
+        zeta = []
+        for x in rlist:
+            for i in x:
+                if j == shape:
+                    j = 0
+                real[index][j] = i.real
+                imag[index][j] = i.imag
+                if(j == 0):
+                    w_n = math.sqrt(i.real**2 + i.imag**2)            
+                    wn.append(np.round(w_n,3))
+                    zeta.append(np.round(-i.real/w_n,3))
 
-            j = j + 1
-        index = index + 1
+                j = j + 1
+            index = index + 1
 
-    return real, imag, np.round(klist,3), wn, zeta
+        return real, imag, np.round(klist,3), wn, zeta
+    except ValueError:
+        print('error:', ValueError)
 
 def separateRealImag(array):
-    parte_real = []
-    parte_imag = []
+    part_real = []
+    part_imag = []
     for i in array:
-        parte_imag.append(np.imag(i))
-        parte_real.append(np.real(i))
-    return parte_real, parte_imag
+        part_imag.append(np.imag(i))
+        part_real.append(np.real(i))
+    return part_real, part_imag
 
-def finalValue(MF):
-    num, den = separateTF(MF)  
-    return num[-1]/den[-1]  
+def finalValue(TF):
+    polesPos = verifyPolesPositive(TF)
+    if not polesPos:
+        num, den = separateTF(TF)  
+        return num[-1]/den[-1]  
+    return None
 
 def checkSettlingTime(specifications, S):
     settlingTimeInput = specifications.settlingTime

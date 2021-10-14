@@ -1,5 +1,5 @@
 import unittest
-from controller_control import *
+from controller import *
 
 class TestController(unittest.TestCase):
 
@@ -81,11 +81,10 @@ class TestController(unittest.TestCase):
         self.assertEqual(bode_info, eBodeInfo)
 
     def test_separateIR(self):
-        series = control.tf([1,2],[1,2,3])
-        zeros = control.zero(series)
+        zeros = [5+1j]
         zero_real, zero_imag = separateRealImag(zeros)
-        eReal = [-2]
-        eImg = [0]
+        eReal = [5]
+        eImg = [1]
         self.assertEqual(zero_real,eReal, "Should be [-2]")
         self.assertEqual(zero_imag,eImg, "Should be [0]")
 

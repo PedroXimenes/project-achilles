@@ -1,18 +1,20 @@
-import React, { createContext, useContext, useState } from 'react'
+import React, { createContext, useContext, useState } from "react";
 
-const DataContext = createContext()
+const DataContext = createContext();
 
 export const useDataContext = () => useContext(DataContext);
 
-const DataProvider = ({children}) => {
-    const [input, setInput] = useState({})
-    const [dataAnalysis, setDataAnalysis] = useState({});
+const DataProvider = ({ children }) => {
+  const [input, setInput] = useState({});
+  const [dataAnalysis, setDataAnalysis] = useState({});
 
-    return (
-        <DataContext.Provider value={{dataAnalysis, setDataAnalysis, input, setInput}}>
-            {children}
-        </DataContext.Provider>
-    )
-}
+  return (
+    <DataContext.Provider
+      value={{ dataAnalysis, setDataAnalysis, input, setInput }}
+    >
+      {children}
+    </DataContext.Provider>
+  );
+};
 
 export default DataProvider;

@@ -83,7 +83,7 @@ const StepResponse = ({ input_data }) => {
             <VictoryAxis
               dependentAxis
               label="Amplitude"
-              axisLabelComponent={<VictoryLabel dy={-10} />}
+              axisLabelComponent={<VictoryLabel dy={-5} />}
               tickLabelComponent={<VictoryLabel dx={8.8} />}
             />
             <VictoryLine
@@ -161,6 +161,7 @@ const StepResponse = ({ input_data }) => {
               labelComponent={
                 <VictoryLabel
                   textAnchor="end"
+                  dy={12}
                   style={[{ fontSize: 10, fill: "red", fontStyle: "italic" }]}
                 />
               }
